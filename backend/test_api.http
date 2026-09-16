@@ -1,0 +1,24 @@
+###
+POST http://127.0.0.1:8000/login
+Content-Type: application/json
+
+{
+  "user_id": "Chan",
+  "password": "cksdn2003"
+}
+
+###
+
+GET http://127.0.0.1:8000/pain-locations
+
+###
+
+POST http://127.0.0.1:8000/pain-logs
+Content-Type: application/json
+
+{
+  "user_id": "Chan",
+  "pain_score": 4,
+  "pain_location_id": 1,
+  "pain_type_id": 1
+}
