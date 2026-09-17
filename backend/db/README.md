@@ -32,9 +32,9 @@
 															 상담 권고
 ```
 
-![spinelog_input_flow.png](spinelog_input_flow.png)
+![spinelog_input_flow.png](img/spinelog_input_flow.png)
 
-![spinelog_recommendation_flow.png](spinelog_recommendation_flow.png)
+![spinelog_recommendation_flow.png](img/spinelog_recommendation_flow.png)
 
 <aside>
 ⚠️
@@ -202,7 +202,7 @@
 
 ## DB diagram
 
-![db_diagram3.png](db_diagram3.png)
+![db_diagram3.png](img/db_diagram3.png)
 
 ## 핵심 구현 API 목록
 
