@@ -67,6 +67,12 @@ part_of_location_id    -- (구 parent_location_id)
 
 새로운 테이블을 분리하지 않고 동일 테이블 내에서 외래키(FK)를 참조하는 명확한 기술적 목적과 의미는 다음과 같음.
 
+① 온톨로지(Ontology)의 개념과 도입 목적지식의 설계도: 온톨로지는 특정 분야의 개념과 관계를 구조화한 지식 표현 모델이며, AI나 프로그램이 추론을 수행할 수 있도록 돕는 ‘지식의 지도’ 역할을 담당함.
+    - 자기 참조(Self-Referencing) 계층 구조: 다단계 트리 구조를 무한하게 확장하기 위해 동일 테이블 내에서 외래키를 참조하는 자기 참조 패턴을 도입함.
+    - 관계 유형 분리 (IS-A vs PART-OF):IS-A (분류/종류): 
+        - conditions, symptoms, 카테고리 테이블에 적용하며, 표준 분류 체계인 SKOS(Simple Knowledge Organization System) 표준을 차용하여 상위 개념을 가리키는 broader_*_id 네이밍을 적용함.
+        - PART-OF (부분/전체): pain_locations (해부학적 포함 관계) 테이블에 적용하여 part_of_location_id로 명명함.
+
 ### **[1. N단계 계층(Tree) 구조의 무한 확장 지원]**
 
 • 질환이나 부위를 대분류, 중분류, 소분류 등 별개의 테이블로 분리할 경우, 계층 깊이(Depth)가 늘어날 때마다 스키마(Schema)를 변경하여 테이블을 계속 추가해야 하는 구조적 한계가 발생함.
