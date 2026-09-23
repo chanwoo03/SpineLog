@@ -67,11 +67,17 @@ part_of_location_id    -- (구 parent_location_id)
 
 새로운 테이블을 분리하지 않고 동일 테이블 내에서 외래키(FK)를 참조하는 명확한 기술적 목적과 의미는 다음과 같음.
 
-① 온톨로지(Ontology)의 개념과 도입 목적지식의 설계도: 온톨로지는 특정 분야의 개념과 관계를 구조화한 지식 표현 모델이며, AI나 프로그램이 추론을 수행할 수 있도록 돕는 ‘지식의 지도’ 역할을 담당함.
-    - 자기 참조(Self-Referencing) 계층 구조: 다단계 트리 구조를 무한하게 확장하기 위해 동일 테이블 내에서 외래키를 참조하는 자기 참조 패턴을 도입함.
-    - 관계 유형 분리 (IS-A vs PART-OF):IS-A (분류/종류): 
-        - conditions, symptoms, 카테고리 테이블에 적용하며, 표준 분류 체계인 SKOS(Simple Knowledge Organization System) 표준을 차용하여 상위 개념을 가리키는 broader_*_id 네이밍을 적용함.
-        - PART-OF (부분/전체): pain_locations (해부학적 포함 관계) 테이블에 적용하여 part_of_location_id로 명명함.
+## **온톨로지(Ontology)의 개념과 도입 목적**
+
+• **지식의 설계도:** 온톨로지는 특정 분야의 개념과 관계를 구조화한 지식 표현 모델이며, AI나 프로그램이 추론을 수행할 수 있도록 돕는 ‘지식의 지도’ 역할을 담당함.   
+
+• **자기 참조(Self-Referencing) 계층 구조:** 다단계 트리 구조를 무한하게 확장하기 위해 동일 테이블 내에서 외래키를 참조하는 자기 참조 패턴을 도입함.
+
+• **관계 유형 분리 (IS-A vs PART-OF):**
+
+    ◦ **IS-A (분류/종류):** `conditions`, `symptoms`, 카테고리 테이블에 적용하며, 표준 분류 체계 **SKOS(Simple Knowledge Organization System)** 표준을 차용하여 상위 개념을 가리키는 `broader_*_id` 네이밍을 적용함.
+
+    ◦ **PART-OF (부분/전체):** `pain_locations` (해부학적 포함 관계) 테이블에 적용하여 `part_of_location_id`로 명명함.
 
 ### **[1. N단계 계층(Tree) 구조의 무한 확장 지원]**
 
@@ -148,8 +154,6 @@ part_of_location_id    -- (구 parent_location_id)
 - **user_conditions:** (기존 `patient_conditions`에서 변경) 사용자가 등록한 본인의 질환 상태, 중증도 단계(`disease_grade`), 운동 목표 기록
 - **conditions:** 척추 질환 종류 마스터 데이터 및 온톨로지 IS-A 계층 구조 (디스크, 협착증 등, `broader_condition_id`로 상하관계 정의)
 - **symptoms:** 증상 마스터 데이터 및 온톨로지 IS-A 계층 구조 (저림, 찌릿함 등, `broader_symptom_id`로 상하관계 정의)
-- **condition_symptom_relations:** (신규) 질환과 증상 간의 의학적 인과관계 및 근거(`rationale`) 매핑
-- **symptom_relation_types:** (신규) 질환-증상 인과관계의 강도 및 종류 마스터 데이터 (흔함, 드묾 등)
 - **user_symptoms:** 사용자가 초기 온보딩 시 선택한 증상 및 심각도 기록 (추론 엔진 폴백 기준값)
 - **pain_logs:** 사용자의 일일 통증 기록 (통증 점수, 시점, 위치, 양상 등)
 - **pain_locations:** 통증 발생 위치 마스터 및 온톨로지 PART-OF 계층 구조 (요부, 엉덩이, 다리 등, `part_of_location_id`로 포함관계 정의)
@@ -159,9 +163,16 @@ part_of_location_id    -- (구 parent_location_id)
 - **exercises:** 추천/비추천 운동 상세 정보 및 난이도, 주의사항
 - **exercise_categories:** 운동 분류 카테고리 및 상하위 계층 구조 (`broader_category_id` 추가)
 - **exercise_recommendation_rules:** (기존 `exercise_rules`에서 변경) 통증 점수 범위, 질환, 증상, 중증도에 따른 맞춤 운동 추천 복합 규칙 매핑
-- **recommendation_levels:** (신규) 운동 추천 등급 마스터 데이터 (권장, 주의, 금기 등)
 - **medical_contents:** 의학 정보 및 척추 관련 큐레이션 콘텐츠 본문 (출처 URL 포함)
 - **content_categories:** 의학 정보 카테고리 및 상하위 계층 구조 (`broader_category_id` 추가)
+
+---
+
+### 추가된 테이블
+
+- **recommendation_levels:** (신규) 운동 추천 등급 마스터 데이터 (권장, 주의, 금기 등)
+- **condition_symptom_relations:** (신규) 질환과 증상 간의 의학적 인과관계 및 근거(`rationale`) 매핑
+- **symptom_relation_types:** (신규) 질환-증상 인과관계의 강도 및 종류 마스터 데이터 (흔함, 드묾 등)
 - **pain_severity_categories**: (신규 추가) 통증의 심각도 범주, VAS(시각통증척도) 범위, 설명 등을 관리하는 마스터 테이블
 - **pain_scale_dictionary:** (신규 추가) 통증 점수별 구체적인 인지·행동 반응 및 대처 가이드를 제공하는 사전 테이블
 - **pain_log_recommendations**: (신규 추가) 사용자가 통증을 기록했을 때(`pain_logs`), 적용된 규칙(`rule_id`)과 추천 레벨에 따라 생성된 개인화 운동 추천 결과를 기록하는 매핑 테이블
@@ -252,7 +263,7 @@ part_of_location_id    -- (구 parent_location_id)
 
 • **`difficulty`**: `difficulty_id`(PK), `descriptions`, `level_name` (난이도 공통 마스터) 
 
-## DB에 더미 데이터 넣기
+## DB에 시드 데이터 넣기
 
 ### 직접 값 입력해야 하는 테이블
 
@@ -394,3 +405,15 @@ part_of_location_id    -- (구 parent_location_id)
 - 뻣뻣함: COMMON — 방어성 근경직으로 인한 가동범위 제한
 
 ---
+
+## 시드 데이터 추가된 테이블
+
+![스크린샷 2026-09-23 125109.png](img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2026-09-23_125109.png)
+
+![스크린샷 2026-09-23 125116.png](img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2026-09-23_125116.png)
+
+![스크린샷 2026-09-23 125124.png](img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2026-09-23_125124.png)
+
+![스크린샷 2026-09-23 125130.png](img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2026-09-23_125130.png)
+
+![스크린샷 2026-09-23 125139.png](img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2026-09-23_125139.png)
