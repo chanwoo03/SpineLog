@@ -1,5 +1,7 @@
 # S/W  project week 4
 
+https://candy-music-18e.notion.site/3e9e5542b5388009806ced1bc1357534?pvs=74
+
 #### users (사용자 테이블)
 
 user_id(pk) : 사용자 id
