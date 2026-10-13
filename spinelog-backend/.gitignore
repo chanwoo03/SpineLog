@@ -1,0 +1,7 @@
+# .gitignore에서는 줄 중간에 # 설명을 붙이면 안 돼요. 
+# 설명이 필요하면 줄 맨 앞에 #를 쓰고 따로 한 줄로 써요.
+.env
+venv/
+__pycache__/
+deploy/db-init/*.sql
+deploy/*.env

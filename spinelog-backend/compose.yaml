@@ -1,0 +1,33 @@
+services:                                   # NAS에서 돌릴 프로그램 목록 (Q1: 2개)
+
+  db:                                       # 프로그램 ① 이름 "db" = api가 MySQL을 찾는 주소 (Q3)
+    image: mysql:8.0                        # 완성품 MySQL 8.0을 받아 쓴다 (Q2: 받아 쓰는 쪽)
+    restart: unless-stopped                 # 죽거나 NAS가 재부팅되면 자동으로 다시 켠다
+    env_file: ./deploy/db.env               # root 비번, DB 이름, 앱 계정을 이 파일에서 읽는다
+    volumes:                                # NAS의 저장 공간을 컨테이너 안에 연결한다
+      - ./deploy/db-init:/docker-entrypoint-initdb.d:ro
+                                            #   NAS의 db-init 폴더 → MySQL이 "처음 켜질 때 실행할 SQL" 자리
+                                            #   그래서 spinelog.sql(테이블 33개+데이터)이 자동으로 들어간다
+                                            #   :ro = 읽기만 (컨테이너가 이 폴더를 못 고침)
+      - mysql-data:/var/lib/mysql           #   DB 데이터를 컨테이너 밖에 보관 (Q6: 지워도 데이터는 남음)
+    healthcheck:                            # "MySQL 준비됐니?"를 주기적으로 물어본다 (Q5)
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD"]
+                                            #   물어보는 방법: root로 MySQL에 ping
+                                            #   여기 localhost는 db 컨테이너 자기 자신 = MySQL이 있는 곳이라 맞음
+                                            #   $$ = $ 한 개 (db.env에서 넣은 비번을 컨테이너 안에서 꺼냄)
+      interval: 10s                         #   10초마다 물어본다
+      timeout: 5s                           #   5초 안에 대답 없으면 실패 1번
+      retries: 10                           #   10번 연속 실패하면 "아픔"으로 판정
+      start_period: 600s                     #   처음 60초는 실패해도 안 센다 (spinelog.sql 읽는 시간)
+
+  api:                                      # 프로그램 ② 이름 "api" = 내 FastAPI
+    build: .                                # 이 폴더의 Dockerfile로 직접 만든다 (Q2: 내가 만든 쪽)
+    restart: unless-stopped                 # db와 같음
+    env_file: ./deploy/api.env              # DATABASE_URL을 읽는다 → db.py의 os.environ이 이 값을 씀
+    ports:                                  # 바깥으로 여는 문 (Q4: api만 연다)
+      - "8000:8000"                         #   NAS의 8000번 → 컨테이너 안 uvicorn의 8000번
+    depends_on:                             # 켜지는 순서 조건 (Q5)
+      db:                                   #   db가         #   healthcheck를 통과한 "뒤에" api를 켠다
+
+volumes:                                    # 위에서 쓴 이름 있는 저장 공간 목록
+  mysql-data:                               # Docker가 NAS 안에 만들어 관리하는 공간
