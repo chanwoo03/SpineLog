@@ -25,7 +25,7 @@
 <section id="cover" style="background:#1B2430;color:#F2F0EA;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
 <p style="font-size:28px;font-weight:600;color:#8FB8E3;letter-spacing:3px">SPINELOG</p>
 <h1 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1.1;color:#F2F0EA">S/W Week7</h1>
-<p style="font-size:36px;color:#BFC8D2;line-height:1.4">통증 기록 API와 규칙 엔진 진행 상황</p>
+<p style="font-size:36px;color:#BFC8D2;line-height:1.4">통증 기록 API와 규칙 판정 진행 상황</p>
 <div style="flex:none;width:160px;height:6px;background:#8FB8E3;border-radius:3px"></div>
 <p style="font-size:30px;color:#F2F0EA">박찬우 · AI소프트웨어학과 · 2026. 10. 14</p>
 
@@ -44,15 +44,9 @@
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:40px">
 <p style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1;color:#2F6FB2">2</p>
-<h3 style="font-size:32px;font-weight:700">규칙 엔진 5단계</h3>
+<h3 style="font-size:32px;font-weight:700">규칙으로 운동 판정</h3>
 <p style="font-size:26px;color:#4A5568;line-height:1.5">현재는 LLM 없이 DB 규칙 19개로 추천·주의·금기 판정 (이후 기능 추가 예정)</p>
-</div>
-<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:40px">
-<p style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1;color:#2F6FB2">3</p>
-<h3 style="font-size:32px;font-weight:700">자동 테스트 8개 통과</h3>
-<p style="font-size:26px;color:#4A5568;line-height:1.5">규칙이 충돌해도 금기 &gt; 주의 &gt; 추천이 지켜지는지 검사</p>
-</div>
-</div>
+</div></div>
 <p style="font-size:28px;color:#4A5568;line-height:1.5">백엔드를 처음부터 다시 만들며 <b>"왜 이렇게 짰는지"</b>를 설명할 수 있게 하는 데 집중했습니다. NAS 배포는 다음 단계로 미뤘습니다.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 2</p>
 
@@ -67,8 +61,8 @@
 <tr><td>메인 (가입·로그인·온보딩)</td><td style="color:#6B7280">미구현</td><td>시연 사용자로 대신함, 질환은 SQL로 입력</td></tr>
 <tr><td>대시보드</td><td style="color:#6B7280">미구현</td><td>없음</td></tr>
 <tr style="background:#E9EEF5"><td>1. 통증 기록</td><td style="color:#2F6FB2">구현 (일부 제외)</td><td>GET /api/pain-options, POST·GET /api/pain-logs</td></tr>
-<tr><td>2. 활동 기록</td><td style="color:#B5621A">API 미구현</td><td>규칙 엔진이 활동 기록을 읽기만 함</td></tr>
-<tr><td>3. 아침 체크인</td><td style="color:#B5621A">API 미구현</td><td>규칙 엔진이 체크인 수면을 읽기만 함</td></tr>
+<tr><td>2. 활동 기록</td><td style="color:#B5621A">API 미구현</td><td>규칙 판정 코드가 활동 기록을 읽기만 함</td></tr>
+<tr><td>3. 아침 체크인</td><td style="color:#B5621A">API 미구현</td><td>규칙 판정 코드가 체크인 수면을 읽기만 함</td></tr>
 <tr><td>4. 의학 콘텐츠</td><td style="color:#6B7280">미구현</td><td>없음</td></tr>
 <tr style="background:#E9EEF5"><td>5. 운동 추천 가이드</td><td style="color:#2F6FB2">판정까지 구현</td><td>services/rule_engine.py (통증 저장 때 실행)</td></tr>
 </table>
@@ -106,7 +100,7 @@
 <div style="display:flex;flex-direction:column;gap:10px">
 <p style="font-size:24px;color:#4A5568">판정 (services)</p>
 <div style="display:flex;gap:10px">
-<p style="font-size:24px;background:#2F6FB2;color:#F7F6F2;padding:6px 16px;border-radius:10px">규칙 엔진 (구현)</p>
+<p style="font-size:24px;background:#2F6FB2;color:#F7F6F2;padding:6px 16px;border-radius:10px">규칙 판정 (구현)</p>
 </div>
 </div>
 <div style="display:flex;flex-direction:column;gap:10px">
@@ -147,10 +141,10 @@
 <p style="font-size:24px;line-height:1.35"><b>2 위치 선택</b> · pain-options (locations) · <span style="color:#2F6FB2">구현</span></p>
 <p style="font-size:24px;line-height:1.35"><b>3 유형 선택</b> · pain-options (types) · <span style="color:#2F6FB2">구현</span></p>
 <p style="font-size:24px;line-height:1.35"><b>4 기록 저장</b> · POST /api/pain-logs · <span style="color:#2F6FB2">구현</span></p>
-<p style="font-size:24px;line-height:1.35"><b>5 심각 범주인가?</b> · 응답에 심각도는 담김, 판단은 없음 · <span style="color:#B5621A">일부</span></p>
+<p style="font-size:24px;line-height:1.35"><b>5 심각 범주인가?</b> · 지금 기준: 통증 7점 이상이면 심각 (정확한 기준은 정하는 중) · <span style="color:#B5621A">일부</span></p>
 <p style="font-size:24px;line-height:1.35"><b>6 경고 알림</b> · <span style="color:#6B7280">미구현</span></p>
 <p style="font-size:24px;line-height:1.35"><b>7 통증 추이</b> · GET /api/pain-logs?date= 하루 목록만 · <span style="color:#B5621A">일부</span></p>
-<p style="font-size:24px;line-height:1.35"><b>8 운동 추천 가이드</b> · 통증 저장 때 규칙 엔진 실행 · <span style="color:#2F6FB2">구현</span></p>
+<p style="font-size:24px;line-height:1.35"><b>8 운동 추천 가이드</b> · 통증 저장 때 규칙 판정 실행 · <span style="color:#2F6FB2">구현</span></p>
 <hr style="border-top:1px solid #DEDBD2">
 <p style="font-size:24px;color:#4A5568;line-height:1.45">흐름도에 없지만 추가한 것: 판정 상태 저장, 기록 상세 조회 (본인 기록만)</p>
 </div>
@@ -169,7 +163,7 @@
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:32px">
 <h3 style="font-size:30px;font-weight:700;line-height:1.35">대부분 화면이 할 일</h3>
-<p style="font-size:24px;color:#4A5568;line-height:1.55">서버는 이미 응답에 심각도를 담음 (기준은 코드가 아닌 표에서 읽음). 경고 표시와 그래프는 React 화면에서</p>
+<p style="font-size:24px;color:#4A5568;line-height:1.55">심각도는 지금 '통증 7점 이상이면 심각'으로 봄 (정확한 기준은 정하는 중). 경고 표시와 그래프는 React 화면에서</p>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:32px">
 <h3 style="font-size:30px;font-weight:700;line-height:1.35">7일 추이는 날짜 범위가 필요</h3>
@@ -178,7 +172,7 @@
 </div>
 <div style="display:flex;flex-direction:column;gap:10px;background:#E9EEF5;border:2px solid #2F6FB2;border-radius:16px;padding:28px 32px">
 <h3 style="font-size:28px;font-weight:700">다음에 할 일</h3>
-<p style="font-size:24px;line-height:1.55">① 7일 범위 조회 API  ② 경고 기준을 서버가 알려 줄지, 화면이 정할지 결정  ③ React 화면 (경고 · 그래프)</p>
+<p style="font-size:24px;line-height:1.55">① 7일 범위 조회 API  ② 정확한 심각도 기준 정하기 (지금은 7점 이상)  ③ React 화면 (경고 · 그래프)</p>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 6</p>
 
@@ -210,58 +204,237 @@
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 7</p>
 
 </section>
-<section id="order" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<section id="flow" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
 <div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">수면 · 활동 기록 API가 없는데 어떻게 판정하나</p>
-<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">판정을 먼저 만든 이유</h2>
+<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">예: Chan이 허리 중앙에 6점 통증을 저장할 때</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">통증 저장 흐름</h2>
 </div>
-<div style="display:flex;gap:36px">
-<div style="flex:none;width:600px;display:flex;flex-direction:column;gap:14px">
-<p style="font-size:24px;color:#4A5568">지금 규칙 19개가 쓰는 조건</p>
-<table style="font-size:26px;color:#1B2430">
-<tr><th style="width:60%;text-align:left">조건</th><th style="width:40%;text-align:right">규칙 수</th></tr>
-<tr><td>통증 점수</td><td style="text-align:right">19</td></tr>
-<tr><td>질환</td><td style="text-align:right">19</td></tr>
-<tr><td>증상</td><td style="text-align:right">4</td></tr>
-<tr><td>질환 등급</td><td style="text-align:right">1</td></tr>
-<tr style="background:#FBEEDF"><td>활동 (동작 태그)</td><td style="text-align:right;color:#B5621A">0</td></tr>
-<tr style="background:#FBEEDF"><td>수면</td><td style="text-align:right;color:#B5621A">0</td></tr>
-</table>
+<div style="display:flex;gap:12px;align-items:stretch">
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:20px 22px"><h3 style="font-size:26px;font-weight:700">1 화면이 요청</h3><p style="font-size:24px;color:#2F6FB2">POST /api/pain-logs</p><p style="font-size:24px;color:#4A5568">점수 6 · 위치 · 유형</p></div>
+<p style="flex:none;align-self:center;font-size:32px;color:#9AA3AE">→</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:20px 22px"><h3 style="font-size:26px;font-weight:700">2 입력 검사</h3><p style="font-size:24px;color:#2F6FB2">schemas.py</p><p style="font-size:24px;color:#4A5568">0~10 밖이면 422</p></div>
+<p style="flex:none;align-self:center;font-size:32px;color:#9AA3AE">→</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:20px 22px"><h3 style="font-size:26px;font-weight:700">3 누구인지</h3><p style="font-size:24px;color:#2F6FB2">deps.py</p><p style="font-size:24px;color:#4A5568">Chan (시연 사용자)</p></div>
+<p style="flex:none;align-self:center;font-size:32px;color:#9AA3AE">→</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:20px 22px"><h3 style="font-size:26px;font-weight:700">4 통증 저장</h3><p style="font-size:24px;color:#2F6FB2">pain_logs.py</p><p style="font-size:24px;color:#4A5568">pain_logs에 저장</p></div>
 </div>
-<div style="flex:1;display:flex;flex-direction:column;gap:16px">
-<div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:20px 26px;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:700">지금은 점수·질환·등급·증상으로 판정</h3><p style="font-size:24px;color:#4A5568;line-height:1.5">활동·수면 조건을 쓰는 규칙이 아직 없어서, 그 기록이 없어도 판정 결과는 같음</p></div>
-<div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:20px 26px;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:700">엔진은 읽을 준비가 되어 있음</h3><p style="font-size:24px;color:#4A5568;line-height:1.5">규칙에 활동·수면 조건을 넣으면 바로 반영. 오늘 체크인이 없으면 PARTIAL로 표시</p></div>
-<div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:20px 26px;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:700">판정을 먼저 만든 이유</h3><p style="font-size:24px;color:#4A5568;line-height:1.5">서비스의 핵심이자 가장 불확실한 부분. 판정이 어떤 자료를 쓰는지 정해야 체크인·활동 API의 모양도 정해짐</p></div>
-<div style="background:#FBEEDF;border:2px solid #B5621A;border-radius:14px;padding:20px 26px;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:28px;font-weight:700">아쉬운 점</h3><p style="font-size:24px;color:#4A5568;line-height:1.5">체크인 API가 없어 결과가 늘 PARTIAL. 다음은 체크인 · 활동 API부터</p></div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#E9EEF5;border:2px solid #2F6FB2;border-radius:16px;padding:20px 22px">
+<p style="font-size:24px;font-weight:700;color:#2F6FB2">규칙 판정 · rule_engine.py</p>
+<div style="display:flex;gap:12px;align-items:stretch">
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FFFFFF;border-radius:12px;padding:18px 20px"><h3 style="font-size:26px;font-weight:700">5 내 상태 모으기</h3><p style="font-size:24px;color:#4A5568">질환 3번 2등급 · 다리 저림 · 체크인 없음</p></div>
+<p style="flex:none;align-self:center;font-size:32px;color:#9AA3AE">→</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FFFFFF;border-radius:12px;padding:18px 20px"><h3 style="font-size:26px;font-weight:700">6 규칙 고르기</h3><p style="font-size:24px;color:#4A5568">19개 중 조건 맞는 규칙만</p></div>
+<p style="flex:none;align-self:center;font-size:32px;color:#9AA3AE">→</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FFFFFF;border-radius:12px;padding:18px 20px"><h3 style="font-size:26px;font-weight:700">7 운동마다 하나로</h3><p style="font-size:24px;color:#4A5568">맥켄지 금기 · 버드독 주의 · 플랭크 추천</p></div>
+<p style="flex:none;align-self:center;font-size:32px;color:#9AA3AE">→</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#FFFFFF;border-radius:12px;padding:18px 20px"><h3 style="font-size:26px;font-weight:700">8 판정 저장</h3><p style="font-size:24px;color:#4A5568">문구 · 규칙 번호 · 상태(부분 판정)</p></div>
 </div>
+</div>
+<div style="display:flex;gap:12px;align-items:center">
+<p style="flex:none;font-size:32px;color:#9AA3AE">→</p>
+<div style="flex:1;display:flex;gap:16px;align-items:center;background:#1B2430;border-radius:14px;padding:18px 24px"><h3 style="font-size:26px;font-weight:700;color:#F2F0EA">9 다시 읽어서 화면에 응답</h3><p style="font-size:24px;color:#BFC8D2">load_detail · 201 · 화면에 보인 결과 = DB에 남은 결과 (다음 장 캡처)</p></div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 8</p>
 
 </section>
-<section id="match" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:24px">
-<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">규칙 검사 코드 <span style="color:#6B7280;font-weight:400">· rule_engine.py match_rules</span></h2>
-<div style="display:flex;flex-direction:column;gap:2px;background:#1B2430;border-radius:16px;padding:26px 32px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#E6EAF0;line-height:1.35">
-<p style="white-space:nowrap">def match_rules(conn, pain_score, ctx):  <span style="color:#8A94A0"># 점수와 내 상태(ctx)를 받아서 걸리는 규칙을 고름</span></p>
-<p style="white-space:nowrap;color:#8A94A0">&#160;&#160;&#160;&#160;# 1) 점수 범위가 맞는 규칙만 DB에서 가져옴 · 칸이 비어 있으면(NULL) 조건 없음</p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;rows = conn.execute(text("""SELECT r.*, g.level_code FROM exercise_guide_rules r ...</p>
-<p style="white-space:nowrap;color:#8FB8E3">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;WHERE (r.min_pain_score IS NULL OR :s &gt;= r.min_pain_score)</p>
-<p style="white-space:nowrap;color:#8FB8E3">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;AND (r.max_pain_score IS NULL OR :s &lt;= r.max_pain_score)"""), {"s": pain_score})</p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;matched = []  <span style="color:#8A94A0"># 걸린 규칙을 담을 곳</span></p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;for r in rows:  <span style="color:#8A94A0"># 2) 나머지 조건을 하나씩 검사 · 안 맞으면 continue = 탈락</span></p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if r["target_condition_id"] is not None and r["target_condition_id"] not in ctx.grades:</p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;continue  <span style="color:#8A94A0"># 그 질환이 없음 (질환 등급 범위도 같은 방식으로 검사)</span></p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if r["target_symptom_id"] is not None and r["target_symptom_id"] not in ctx.symptom_ids:</p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;continue  <span style="color:#8A94A0"># 그 증상이 없음</span></p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if r["target_tag_id"] is not None and r["target_tag_id"] not in ctx.recent_tag_ids:</p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;continue  <span style="color:#8A94A0"># 어제부터 그 동작을 한 적 없음</span></p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;if r["max_sleep_minutes"] is not None and (</p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;ctx.sleep_minutes is None or ctx.sleep_minutes &gt; r["max_sleep_minutes"]):</p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;continue  <span style="color:#8A94A0"># 수면 조건이 안 맞음 (오늘 체크인이 없어도 탈락)</span></p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;matched.append(dict(r))  <span style="color:#8A94A0"># 모든 검사 통과 → 걸린 규칙</span></p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;return matched</p>
+<section id="swagger1" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">Swagger(/docs)에서 실행한 결과</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">실행 결과 1: API 목록과 선택지</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<img src="img/cap1.png" alt="Swagger 통증 기록 API 4개 목록" style="width:818px;height:560px;object-fit:contain;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px">
+<p style="font-size:24px;color:#4A5568">통증 기록 API 4개</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<img src="img/cap2.png" alt="GET /api/pain-options 응답" style="width:818px;height:560px;object-fit:contain;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px">
+<p style="font-size:24px;color:#4A5568">점수 설명 · 위치 · 유형 선택지를 한 번에</p>
+</div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 9</p>
 
+</section>
+<section id="result1" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">6점을 저장하면 판정 결과까지 함께 저장되고, 나중에 다시 봐도 같은 결과</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">실행 결과 2: 저장과 판정</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<img src="img/cap3.png" alt="POST /api/pain-logs 6점 저장 201 응답" style="width:818px;height:560px;object-fit:contain;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px">
+<p style="font-size:24px;color:#4A5568">저장 성공(201) · 질환·체크인 정보가 없어 맞는 규칙 없음(NO_MATCH)</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<img src="img/cap6.png" alt="GET /api/pain-logs/13 200 응답" style="width:818px;height:560px;object-fit:contain;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px">
+<p style="font-size:24px;color:#4A5568">13번을 다시 조회(200) · 저장된 결과 그대로</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 10</p>
+
+</section>
+<section id="result2" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">규칙이 없을 때, 값이 잘못됐을 때, 기록이 없을 때</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">실행 결과 3: 여러 경우</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 20px">
+<div style="display:flex;flex-direction:column;gap:8px"><img src="img/cap4.png" alt="9점 저장 결과" style="width:822px;height:250px;object-fit:contain;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px"><p style="font-size:24px;color:#4A5568">④ 9점 → 201 · 맞는 규칙 없음(NO_MATCH) + 기본 안내</p></div>
+<div style="display:flex;flex-direction:column;gap:8px"><img src="img/cap5.png" alt="11점 422 결과" style="width:822px;height:250px;object-fit:contain;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px"><p style="font-size:24px;color:#4A5568">⑤ 11점 → 422 · 10 이하만 허용</p></div>
+<div style="display:flex;flex-direction:column;gap:8px"><img src="img/cap7.png" alt="오늘 날짜 목록" style="width:822px;height:250px;object-fit:contain;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px"><p style="font-size:24px;color:#4A5568">⑦ 날짜 비우면 오늘(Asia/Seoul) 기록 목록</p></div>
+<div style="display:flex;flex-direction:column;gap:8px"><img src="img/cap8.png" alt="없는 기록 404" style="width:822px;height:250px;object-fit:contain;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px"><p style="font-size:24px;color:#4A5568">⑧ 없는 번호 999999 → 404</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 11</p>
+
+</section>
+<section id="files" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">어제 · 오늘 작성한 코드, 파일마다 한 가지 일만</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">작성한 파일</h2>
+</div>
+<table style="font-size:24px;color:#1B2430">
+<tr><th style="width:30%;text-align:left">파일</th><th style="width:48%;text-align:left">하는 일</th><th style="width:22%;text-align:left">확인</th></tr>
+<tr><td>main.py</td><td>서버 입구, 라우터 연결, health · db-check</td><td>내 PC</td></tr>
+<tr><td>db.py</td><td>.env로 DB 연결, 연결마다 UTC 고정</td><td>내 PC</td></tr>
+<tr><td>deps.py</td><td>요청한 사용자 판단 (지금은 시연 사용자)</td><td>내 PC (임시)</td></tr>
+<tr><td>timeutil.py</td><td>UTC 저장, 사용자 시간대의 '하루' 계산</td><td>테스트 DB</td></tr>
+<tr><td>schemas.py</td><td>요청 · 응답 모양, 잘못된 입력은 422</td><td>테스트 DB</td></tr>
+<tr><td>routers/pain_logs.py</td><td>통증 기록 API 4개</td><td>저장: 내 PC / 판정: 테스트 DB</td></tr>
+<tr><td>services/rule_engine.py</td><td>규칙으로 운동 판정 (상태 모으기 → 규칙 검사 → 판정)</td><td>테스트 DB</td></tr>
+<tr><td>migrations 001 · 002</td><td>판정 이력 컬럼 추가, 시연 사용자 질환 입력</td><td>적용 확인 필요</td></tr></table>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 12</p>
+
+</section>
+<section id="timezone" style="display:flex; flex-direction:column; gap:40px; padding:112px 128px 160px; background:#1b2430">
+  <div style="display:flex; flex-direction:column; gap:12px">
+    <p style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; font-weight:600; letter-spacing:2px; color:#8fb8e3">교수님 피드백 "나라별 시간, 표준시를 어디로 할지"</p>
+    <h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif; font-size:64px; font-weight:700; line-height:1.2; color:#f2f0ea">어려웠던 점 1: 시간대</h2>
+  </div>
+  <div style="display:flex; flex-direction:row; gap:28px">
+    <div style="display:flex; flex-direction:column; gap:14px; flex:1; padding:32px; background:#26313f; border-radius:16px">
+      <p style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; font-weight:700; color:#8fb8e3">1 · 해결</p>
+      <h3 style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:30px; font-weight:700; line-height:1.35; color:#f2f0ea">UTC로 저장하니 아침 기록이 '어제'가 됨</h3>
+      <p style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; line-height:1.55; color:#bfc8d2">한국 10/14 08:00 = 세계 표준시 10/13 23:00. 저장은 표준시로 하고, 찾을 때는 한국의 하루(0~24시)를 표준시로 바꿔서 찾음</p>
+      <p style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; line-height:1.55; color:#f2f0ea"><span style="color:#8fb8e3"><b>해결 →</b></span> timeutil.py의 local_date_range_utc()가 한국의 하루를 표준시 범위로 바꿔 줌 (다음 장 코드)</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:14px; flex:1; padding:32px; background:#26313f; border-radius:16px">
+      <p style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; font-weight:700; color:#8fb8e3">2 · 결정</p>
+      <h3 style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:30px; font-weight:700; line-height:1.35; color:#f2f0ea">시차를 +9가 아닌 이름(Asia/Seoul)으로</h3>
+      <p style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; line-height:1.55; color:#bfc8d2">서머타임 때문에 시차가 계절마다 바뀜 (뉴욕은 2026-03-08 하루가 23시간)</p>
+      <p style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; line-height:1.55; color:#f2f0ea"><span style="color:#8fb8e3"><b>해결 →</b></span> users.timezone에 'Asia/Seoul'을 저장하고 ZoneInfo로 계산</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:14px; flex:1; padding:32px; background:#26313f; border:2px solid #e3a25f; border-radius:16px">
+      <p style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; font-weight:700; color:#e3a25f">3 · 남은 한계</p>
+      <h3 style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:30px; font-weight:700; line-height:1.35; color:#f2f0ea">여행하면 '하루 = 잠 한 번'이 깨짐</h3>
+      <p style="font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; line-height:1.55; color:#bfc8d2">서울 10/20 아침 체크인 후 뉴욕 10/20 아침 체크인 → 어느 기준이든 같은 날짜. 아직 해결 못 함</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1664px; font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; color:#8a94a0">S/W Week7 · 13</p>
+  
+</section>
+<section id="timecode" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">ZoneInfo로 사용자 시간대의 하루를 UTC 범위로 변환</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">시간대 계산 코드 <span style="color:#6B7280;font-weight:400">· timeutil.py</span></h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;background:#1B2430;border-radius:16px;padding:26px 32px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#E6EAF0;line-height:1.4">
+<p style="white-space:nowrap">def local_date_range_utc(tz_name, d):  <span style="color:#8A94A0"># 사용자 시간대 이름("Asia/Seoul")과 날짜</span></p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;start = datetime.combine(d, time.min, tzinfo=ZoneInfo(tz_name))  <span style="color:#8A94A0"># 사용자 시간대의 0시</span></p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;end = start + timedelta(days=1)  <span style="color:#8A94A0"># 다음 날 0시</span></p>
+<p style="white-space:nowrap;color:#8FB8E3">&#160;&#160;&#160;&#160;to_utc = lambda x: x.astimezone(timezone.utc).replace(tzinfo=None)  <span style="color:#8A94A0"># UTC로 변환</span></p>
+<p style="white-space:nowrap">&#160;&#160;&#160;&#160;return to_utc(start), to_utc(end)  <span style="color:#8A94A0"># (시작, 끝) 두 개를 돌려줌</span></p>
+<p style="white-space:nowrap">&#160;</p>
+<p style="white-space:nowrap;color:#8A94A0"># 날짜별 목록 API에서 쓰는 곳</p>
+<p style="white-space:nowrap">start, end = local_date_range_utc("Asia/Seoul", date(2026, 10, 14))</p>
+<p style="white-space:nowrap">... WHERE recorded_at &gt;= :start AND recorded_at &lt; :end  <span style="color:#8A94A0"># 끝은 '미만' (다음 날 0시 제외)</span></p>
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:22px 26px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:26px;font-weight:700">한국 10/14 하루</h3>
+<p style="font-size:24px;color:#4A5568;line-height:1.5">10/14 00:00 ~ 10/15 00:00 (Asia/Seoul)<br>= 10/13 15:00 ~ 10/14 15:00 (UTC)</p>
+</div>
+<div style="flex:1;background:#E9EEF5;border:2px solid #2F6FB2;border-radius:14px;padding:22px 26px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-size:26px;font-weight:700">아침 8시 기록</h3>
+<p style="font-size:24px;color:#4A5568;line-height:1.5">DB에는 10/13 23:00 (UTC)로 저장<br>→ 위 범위 안이라 <b style="color:#1B2430">10/14 기록으로 제대로 찾음</b></p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 14</p>
+
+</section>
+<section id="hard2" style="background:#1B2430;color:#F2F0EA;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#8FB8E3;letter-spacing:2px">건강 정보라서, 틀린 판정보다 '믿을 수 없는 판정'이 더 위험</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.2;color:#F2F0EA">어려웠던 점 2: 판정을 믿을 수 있게</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#26313F;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;color:#8FB8E3">고민</p>
+<h3 style="font-size:30px;font-weight:700;line-height:1.35;color:#F2F0EA">규칙끼리 다른 답을 내면?</h3>
+<p style="font-size:24px;color:#BFC8D2;line-height:1.55">한 운동에 '추천'과 '금기'가 같이 걸림. 어느 쪽이 맞는지 프로그램은 모름</p>
+<p style="font-size:24px;color:#F2F0EA;line-height:1.55"><b>→ 더 위험한 쪽을 따름</b></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#26313F;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;color:#8FB8E3">고민</p>
+<h3 style="font-size:30px;font-weight:700;line-height:1.35;color:#F2F0EA">판단할 근거가 없으면?</h3>
+<p style="font-size:24px;color:#BFC8D2;line-height:1.55">맞는 규칙이 없거나 체크인이 빠졌는데 결과가 '추천'처럼 보이면 위험</p>
+<p style="font-size:24px;color:#F2F0EA;line-height:1.55"><b>→ 판정 상태를 따로 저장</b> (NO_MATCH · PARTIAL)</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#26313F;border-radius:16px;padding:32px">
+<p style="font-size:24px;font-weight:700;color:#8FB8E3">고민</p>
+<h3 style="font-size:30px;font-weight:700;line-height:1.35;color:#F2F0EA">규칙이 나중에 바뀌면?</h3>
+<p style="font-size:24px;color:#BFC8D2;line-height:1.55">판정 결과에 규칙 번호만 남기면, 규칙 문구를 고쳤을 때 지난 기록의 안내도 같이 바뀌어 버림</p>
+<p style="font-size:24px;color:#F2F0EA;line-height:1.55"><b>→ 판정할 때 안내 문구도 판정 결과에 같이 저장</b> (규칙을 고치는 기능 자체는 아직)</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#8A94A0">S/W Week7 · 15</p>
+
+</section>
+<section id="next" style="background:#1B2430;color:#F2F0EA;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#8FB8E3;letter-spacing:2px">나머지 API와 로그인까지</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.2;color:#F2F0EA">다음 주 계획</h2>
+</div>
+<ol style="font-size:34px;color:#F2F0EA;line-height:1.75">
+<li>아침 체크인 · 활동 기록 API <span style="color:#BFC8D2">(판정에 쓸 수면 · 활동 자료)</span></li>
+<li>대시보드 · 의학 콘텐츠 API</li>
+<li>통증 7일 추이 API</li>
+<li>회원가입 · 로그인 <span style="color:#BFC8D2">(deps.py를 토큰 검사로 교체)</span></li>
+</ol>
+<p style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:44px;font-weight:700;color:#8FB8E3">감사합니다 · 질문 받겠습니다</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#8A94A0">S/W Week7 · 16</p>
+
+</section>
+<section id="appendix" style="background:#1B2430;color:#F2F0EA;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:24px">
+<p style="font-size:28px;font-weight:600;color:#8FB8E3;letter-spacing:3px">부록</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:80px;font-weight:700;line-height:1.15;color:#F2F0EA">규칙 판정 코드</h2>
+<p style="font-size:32px;color:#BFC8D2;line-height:1.5">규칙 검사 · 규칙이 겹칠 때 · 판정 상태<br>질문이 나오면 보여 드립니다</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#8A94A0">S/W Week7 · 17</p>
+
+</section>
+<section id="match" style="background:#f7f6f2">
+  <p id="e1-yzu1sm" style="position:absolute; bottom:64px; left:128px; width:1664px; font-family:'Noto Sans KR', Arial, sans-serif; font-size:24px; color:#6b7280">S/W Week7 · 부록 18</p>
+  <h2 id="p6fe7f2eec579r0-b91241bb" style="position:absolute; top:112px; left:128px; width:1664px; font-family:'IBM Plex Sans KR', Arial, sans-serif; font-size:56px; font-weight:700; line-height:1.2; color:#1b2430">규칙 검사 코드 <span style="color:#6b7280">· rule_engine.py match_rules</span></h2>
+  <div id="p6fe7f2eec579r1-b91241bb" style="position:absolute; top:203px; left:128px; width:1664px; height:670px; display:flex; flex-direction:column; gap:2px; padding:26px 32px; background:#1b2430; border-radius:16px">
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">def match_rules(conn, pain_score, ctx): <span style="color:#8a94a0"># 점수와 내 상태(ctx)를 받아서 걸리는 규칙을 고름</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#8a94a0">&nbsp;&nbsp;&nbsp;&nbsp;# 1) 점수 범위가 맞는 규칙만 DB에서 가져옴 · 칸이 비어 있으면(NULL) 조건 없음</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;rows = conn.execute(text("""SELECT r.*, g.level_code FROM exercise_guide_rules r ...</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#8fb8e3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE (r.min_pain_score IS NULL OR :s &gt;= r.min_pain_score)</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#8fb8e3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND (r.max_pain_score IS NULL OR :s &lt;= r.max_pain_score)"""), {"s": pain_score})</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;matched = [] <span style="color:#8a94a0"># 걸린 규칙을 담을 곳</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;for r in rows: <span style="color:#8a94a0"># 2) 나머지 조건을 하나씩 검사 · 안 맞으면 continue = 탈락</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if r["target_condition_id"] is not None and r["target_condition_id"] not in ctx.grades:</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue <span style="color:#8a94a0"># 그 질환이 없음 (질환 등급 범위도 같은 방식으로 검사)</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if r["target_symptom_id"] is not None and r["target_symptom_id"] not in ctx.symptom_ids:</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue <span style="color:#8a94a0"># 그 증상이 없음</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if r["target_tag_id"] is not None and r["target_tag_id"] not in ctx.recent_tag_ids:</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue <span style="color:#8a94a0"># 어제부터 그 동작을 한 적 없음</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if r["max_sleep_minutes"] is not None and (</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ctx.sleep_minutes is None or ctx.sleep_minutes &gt; r["max_sleep_minutes"]):</p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue <span style="color:#8a94a0"># 수면 조건이 안 맞음 (오늘 체크인이 없어도 탈락)</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matched.append(dict(r)) <span style="color:#8a94a0"># 모든 검사 통과 → 걸린 규칙</span></p>
+    <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:24px; line-height:1.35; white-space:nowrap; color:#e6eaf0">&nbsp;&nbsp;&nbsp;&nbsp;return matched</p>
+  </div>
+  
 </section>
 <section id="decide" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
 <div style="display:flex;flex-direction:column;gap:12px">
@@ -284,7 +457,7 @@
 <div style="flex:1;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:20px 26px;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:26px;font-weight:700">파란 줄 읽는 법</h3><p style="font-size:24px;color:#4A5568;line-height:1.5">앞의 위험도부터 비교하고, 같을 때만 우선순위를 봄. 마이너스를 붙여 '작을수록 이김'으로 맞춤</p></div>
 <div style="flex:1;background:#E9EEF5;border:2px solid #2F6FB2;border-radius:14px;padding:20px 26px;display:flex;flex-direction:column;gap:6px"><h3 style="font-size:26px;font-weight:700">예</h3><p style="font-size:24px;color:#4A5568;line-height:1.5">추천(우선순위 1) = (-1, 1), 주의(우선순위 9) = (-2, 9) → -2가 더 작으니 <b style="color:#1B2430">주의</b></p></div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 10</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 부록 19</p>
 
 </section>
 <section id="status" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:32px">
@@ -308,141 +481,13 @@
 <p style="white-space:nowrap;color:#8FB8E3">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return "PARTIAL"</p>
 <p style="white-space:nowrap;color:#8FB8E3">&#160;&#160;&#160;&#160;return "COMPLETED"  <span style="color:#8A94A0"># 판정도 했고 자료도 충분</span></p>
 </div>
-<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#E9EEF5;border:2px solid #2F6FB2;border-radius:16px;padding:28px 30px">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:56px;font-weight:600;color:#2F6FB2;line-height:1.1">8 passed</p>
-<p style="font-size:24px;color:#4A5568">pytest · 가짜 규칙으로 판정 함수만 검사</p>
-<ul style="font-size:24px;color:#1B2430;line-height:1.6">
-<li>금기가 추천을 이김</li>
-<li>규칙 입력 순서와 무관</li>
-<li>위험도가 우선순위보다 먼저</li>
-<li>같은 위험도면 우선순위</li>
-<li>운동끼리는 서로 독립</li>
-<li>상태 3가지가 조건대로</li>
-</ul>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="background:#E9EEF5;border-radius:14px;padding:20px 24px;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:26px;font-weight:700;color:#2F6FB2">COMPLETED</h3><p style="font-size:24px;color:#4A5568">판정 완료</p></div>
+<div style="background:#FBEEDF;border-radius:14px;padding:20px 24px;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:26px;font-weight:700;color:#B5621A">PARTIAL</h3><p style="font-size:24px;color:#4A5568">부분 판정 (체크인 등 빠짐)</p></div>
+<div style="background:#EEEFF1;border-radius:14px;padding:20px 24px;display:flex;flex-direction:column;gap:4px"><h3 style="font-size:26px;font-weight:700;color:#4A5568">NO_MATCH</h3><p style="font-size:24px;color:#4A5568">맞는 규칙 없음, 기본 안내만</p></div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 11</p>
-
-</section>
-<section id="files" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
-<div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">어제 · 오늘 작성한 코드, 파일마다 한 가지 일만</p>
-<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">작성한 파일</h2>
-</div>
-<table style="font-size:24px;color:#1B2430">
-<tr><th style="width:30%;text-align:left">파일</th><th style="width:48%;text-align:left">하는 일</th><th style="width:22%;text-align:left">확인</th></tr>
-<tr><td>main.py</td><td>서버 입구, 라우터 연결, health · db-check</td><td>내 PC</td></tr>
-<tr><td>db.py</td><td>.env로 DB 연결, 연결마다 UTC 고정</td><td>내 PC</td></tr>
-<tr><td>deps.py</td><td>요청한 사용자 판단 (지금은 시연 사용자)</td><td>내 PC (임시)</td></tr>
-<tr><td>timeutil.py</td><td>UTC 저장, 사용자 시간대의 '하루' 계산</td><td>테스트 DB</td></tr>
-<tr><td>schemas.py</td><td>요청 · 응답 모양, 잘못된 입력은 422</td><td>테스트 DB</td></tr>
-<tr><td>routers/pain_logs.py</td><td>통증 기록 API 4개</td><td>저장: 내 PC / 판정: 테스트 DB</td></tr>
-<tr><td>services/rule_engine.py</td><td>규칙 엔진 5단계</td><td>테스트 DB</td></tr>
-<tr><td>migrations 001 · 002</td><td>판정 이력 컬럼 추가, 시연 사용자 질환 입력</td><td>적용 확인 필요</td></tr>
-<tr><td>tests/test_rule_engine.py</td><td>규칙 충돌 자동 테스트 8개</td><td>8 passed</td></tr>
-</table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 12</p>
-
-</section>
-<section id="timezone" style="background:#1B2430;color:#F2F0EA;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:40px">
-<div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;color:#8FB8E3;letter-spacing:2px">교수님 피드백 "나라별 시간, 표준시를 어디로 할지"</p>
-<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.2;color:#F2F0EA">어려웠던 점 1: 시간대</h2>
-</div>
-<div style="display:flex;gap:28px">
-<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#26313F;border-radius:16px;padding:32px">
-<p style="font-size:24px;font-weight:700;color:#8FB8E3">1 · 해결</p>
-<h3 style="font-size:30px;font-weight:700;line-height:1.35;color:#F2F0EA">UTC로 저장하니 아침 기록이 '어제'가 됨</h3>
-<p style="font-size:24px;color:#BFC8D2;line-height:1.55">한국 10/14 08:00 = 세계 표준시 10/13 23:00. 저장은 표준시로 하고, 찾을 때는 한국의 하루(0~24시)를 표준시로 바꿔서 찾음</p>
-<p style="font-size:24px;color:#F2F0EA;line-height:1.55"><b style="color:#8FB8E3">해결 →</b> timeutil.py의 local_date_range_utc()가 한국의 하루를 표준시 범위로 바꿔 줌 (다음 장 코드)</p>
-</div>
-<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#26313F;border-radius:16px;padding:32px">
-<p style="font-size:24px;font-weight:700;color:#8FB8E3">2 · 결정</p>
-<h3 style="font-size:30px;font-weight:700;line-height:1.35;color:#F2F0EA">시차를 +9가 아닌 이름(Asia/Seoul)으로</h3>
-<p style="font-size:24px;color:#BFC8D2;line-height:1.55">서머타임 때문에 시차가 계절마다 바뀜. 뉴욕은 2026-03-08 하루가 23시간 → 지역 이름을 저장하면 파이썬이 알아서 계산</p>
-<p style="font-size:24px;color:#F2F0EA;line-height:1.55"><b style="color:#8FB8E3">해결 →</b> users 표의 timezone 칸에 'Asia/Seoul'처럼 이름을 저장하고, 코드에서 ZoneInfo(이름)로 그 나라 시계를 만듦</p>
-</div>
-<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#26313F;border:2px solid #E3A25F;border-radius:16px;padding:32px">
-<p style="font-size:24px;font-weight:700;color:#E3A25F">3 · 남은 한계</p>
-<h3 style="font-size:30px;font-weight:700;line-height:1.35;color:#F2F0EA">여행하면 '하루 = 잠 한 번'이 깨짐</h3>
-<p style="font-size:24px;color:#BFC8D2;line-height:1.55">서울 10/20 아침 체크인 후 뉴욕 10/20 아침 체크인 → 어느 기준이든 같은 날짜. 아직 해결 못 함</p>
-<p style="font-size:24px;color:#F2F0EA;line-height:1.55"><b style="color:#E3A25F">개선안 →</b> 날짜가 아닌 '최근 N시간 안의 체크인'으로 찾기</p>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#8A94A0">S/W Week7 · 13</p>
-
-</section>
-<section id="timecode" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
-<div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">한국의 '하루'를 세계 표준시(UTC) 범위로 바꿔서 찾기</p>
-<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">시간대 계산 코드 <span style="color:#6B7280;font-weight:400">· timeutil.py</span></h2>
-</div>
-<div style="display:flex;flex-direction:column;gap:2px;background:#1B2430;border-radius:16px;padding:26px 32px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#E6EAF0;line-height:1.4">
-<p style="white-space:nowrap">def local_date_range_utc(tz_name, d):  <span style="color:#8A94A0"># 사용자 시간대 이름("Asia/Seoul")과 날짜</span></p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;start = datetime.combine(d, time.min, tzinfo=ZoneInfo(tz_name))  <span style="color:#8A94A0"># 그 날짜 0시</span></p>
-<p style="white-space:nowrap;color:#8A94A0">&#160;&#160;&#160;&#160;# ↑ ZoneInfo("Asia/Seoul") = 이름으로 만든 그 나라 시계 (서머타임 규칙까지 들어 있음)</p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;end = start + timedelta(days=1)  <span style="color:#8A94A0"># 다음 날 0시</span></p>
-<p style="white-space:nowrap;color:#8FB8E3">&#160;&#160;&#160;&#160;to_utc = lambda x: x.astimezone(timezone.utc).replace(tzinfo=None)  <span style="color:#8A94A0"># 같은 순간을 표준시로</span></p>
-<p style="white-space:nowrap">&#160;&#160;&#160;&#160;return to_utc(start), to_utc(end)  <span style="color:#8A94A0"># (시작, 끝) 두 개를 돌려줌</span></p>
-<p style="white-space:nowrap">&#160;</p>
-<p style="white-space:nowrap;color:#8A94A0"># 날짜별 목록 API에서 쓰는 곳</p>
-<p style="white-space:nowrap">start, end = local_date_range_utc("Asia/Seoul", date(2026, 10, 14))</p>
-<p style="white-space:nowrap">... WHERE recorded_at &gt;= :start AND recorded_at &lt; :end  <span style="color:#8A94A0"># 끝은 '미만' (다음 날 0시 제외)</span></p>
-</div>
-<div style="display:flex;gap:24px">
-<div style="flex:1;background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:22px 26px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:26px;font-weight:700">한국 10/14 하루</h3>
-<p style="font-size:24px;color:#4A5568;line-height:1.5">10/14 00:00 ~ 10/15 00:00 (한국)<br>= 10/13 15:00 ~ 10/14 15:00 (표준시)</p>
-</div>
-<div style="flex:1;background:#E9EEF5;border:2px solid #2F6FB2;border-radius:14px;padding:22px 26px;display:flex;flex-direction:column;gap:8px">
-<h3 style="font-size:26px;font-weight:700">아침 8시 기록</h3>
-<p style="font-size:24px;color:#4A5568;line-height:1.5">DB에는 10/13 23:00 (표준시)로 저장<br>→ 위 범위 안이라 <b style="color:#1B2430">10/14 기록으로 제대로 찾음</b></p>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 14</p>
-
-</section>
-<section id="hard2" style="background:#1B2430;color:#F2F0EA;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:40px">
-<div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;color:#8FB8E3;letter-spacing:2px">건강 정보라서, 틀린 판정보다 '믿을 수 없는 판정'이 더 위험</p>
-<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.2;color:#F2F0EA">어려웠던 점 2: 판정을 믿을 수 있게</h2>
-</div>
-<div style="display:flex;gap:28px">
-<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#26313F;border-radius:16px;padding:32px">
-<p style="font-size:24px;font-weight:700;color:#8FB8E3">고민</p>
-<h3 style="font-size:30px;font-weight:700;line-height:1.35;color:#F2F0EA">규칙끼리 다른 답을 내면?</h3>
-<p style="font-size:24px;color:#BFC8D2;line-height:1.55">한 운동에 '추천'과 '금기'가 같이 걸림. 어느 쪽이 맞는지 프로그램은 모름</p>
-<p style="font-size:24px;color:#F2F0EA;line-height:1.55"><b>→ 더 위험한 쪽을 따름</b>, 테스트로 확인</p>
-</div>
-<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#26313F;border-radius:16px;padding:32px">
-<p style="font-size:24px;font-weight:700;color:#8FB8E3">고민</p>
-<h3 style="font-size:30px;font-weight:700;line-height:1.35;color:#F2F0EA">판단할 근거가 없으면?</h3>
-<p style="font-size:24px;color:#BFC8D2;line-height:1.55">맞는 규칙이 없거나 체크인이 빠졌는데 결과가 '추천'처럼 보이면 위험</p>
-<p style="font-size:24px;color:#F2F0EA;line-height:1.55"><b>→ 판정 상태를 따로 저장</b> (NO_MATCH · PARTIAL)</p>
-</div>
-<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#26313F;border-radius:16px;padding:32px">
-<p style="font-size:24px;font-weight:700;color:#8FB8E3">고민</p>
-<h3 style="font-size:30px;font-weight:700;line-height:1.35;color:#F2F0EA">규칙이 나중에 바뀌면?</h3>
-<p style="font-size:24px;color:#BFC8D2;line-height:1.55">규칙 문구를 고치면 지난 기록에서 그때 본 안내가 달라짐</p>
-<p style="font-size:24px;color:#F2F0EA;line-height:1.55"><b>→ 그때 문구를 복사해 저장</b>, 어떤 규칙 때문인지도 함께</p>
-</div>
-</div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#8A94A0">S/W Week7 · 15</p>
-
-</section>
-<section id="next" style="background:#1B2430;color:#F2F0EA;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:40px">
-<div style="display:flex;flex-direction:column;gap:12px">
-<p style="font-size:24px;font-weight:600;color:#8FB8E3;letter-spacing:2px">나머지 API와 로그인까지</p>
-<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.2;color:#F2F0EA">다음 주 계획</h2>
-</div>
-<ol style="font-size:34px;color:#F2F0EA;line-height:1.75">
-<li>아침 체크인 · 활동 기록 API <span style="color:#BFC8D2">(판정에 쓸 수면 · 활동 자료)</span></li>
-<li>대시보드 · 의학 콘텐츠 API</li>
-<li>통증 7일 추이 API</li>
-<li>회원가입 · 로그인 <span style="color:#BFC8D2">(deps.py를 토큰 검사로 교체)</span></li>
-</ol>
-<p style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:44px;font-weight:700;color:#8FB8E3">감사합니다 · 질문 받겠습니다</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#8A94A0">S/W Week7 · 16</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week7 · 부록 20</p>
 
 </section>
 </div>
