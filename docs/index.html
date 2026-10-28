@@ -1,40 +1,130 @@
 <!doctype html>
 <html lang="ko">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SpineLog</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{--bg:#FBFBF9;--panel:#fff;--ink:#262B33;--text:#4B5462;--muted:#8A929E;--line:#E9E5DD;--blue:#2F6E9E;--blue-bg:#E9F1F7}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans KR","Malgun Gothic",sans-serif;line-height:1.6;word-break:keep-all;
-    background-image:linear-gradient(rgba(47,110,158,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(47,110,158,.06) 1px,transparent 1px);background-size:24px 24px}
-  main{max-width:640px;margin:0 auto;padding:64px 16px}
-  .eyebrow{font:500 13px "IBM Plex Mono",monospace;color:var(--blue);letter-spacing:.04em}
-  h1{color:var(--ink);font-size:34px;margin:6px 0 8px}
-  p.lead{margin:0 0 32px}
-  a.card{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;
-    padding:18px 20px;margin-bottom:12px;color:inherit;text-decoration:none;box-shadow:0 6px 22px rgba(38,43,51,.05);transition:border-color .15s}
-  a.card:hover{border-color:#5B97C4}
-  a.card b{color:var(--ink);font-size:17px}
-  a.card small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
-  .tag{font:500 12px "IBM Plex Mono",monospace;color:var(--blue);background:var(--blue-bg);padding:3px 9px;border-radius:99px;white-space:nowrap}
-  footer{margin-top:40px;font-size:13px;color:var(--muted)}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpineLog</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FBFBF9;
+      --panel: #fff;
+      --ink: #262B33;
+      --text: #4B5462;
+      --muted: #8A929E;
+      --line: #E9E5DD;
+      --blue: #2F6E9E;
+      --blue-bg: #E9F1F7
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "IBM Plex Sans KR", "Malgun Gothic", sans-serif;
+      line-height: 1.6;
+      word-break: keep-all;
+      background-image: linear-gradient(rgba(47, 110, 158, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(47, 110, 158, .06) 1px, transparent 1px);
+      background-size: 24px 24px
+    }
+
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 64px 16px
+    }
+
+    .eyebrow {
+      font: 500 13px "IBM Plex Mono", monospace;
+      color: var(--blue);
+      letter-spacing: .04em
+    }
+
+    h1 {
+      color: var(--ink);
+      font-size: 34px;
+      margin: 6px 0 8px
+    }
+
+    p.lead {
+      margin: 0 0 32px
+    }
+
+    a.card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 6px 22px rgba(38, 43, 51, .05);
+      transition: border-color .15s
+    }
+
+    a.card:hover {
+      border-color: #5B97C4
+    }
+
+    a.card b {
+      color: var(--ink);
+      font-size: 17px
+    }
+
+    a.card small {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px
+    }
+
+    .tag {
+      font: 500 12px "IBM Plex Mono", monospace;
+      color: var(--blue);
+      background: var(--blue-bg);
+      padding: 3px 9px;
+      border-radius: 99px;
+      white-space: nowrap
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 13px;
+      color: var(--muted)
+    }
+  </style>
 </head>
+
 <body>
-<main>
-  <div class="eyebrow">S/W PROJECT · 박찬우</div>
-  <h1>SpineLog</h1>
-  <p class="lead">척추 질환 사용자의 통증 · 생활 기록을 바탕으로 운동을 규칙으로 판정하는 서비스</p>
+  <main>
+    <div class="eyebrow">S/W PROJECT · 박찬우</div>
+    <h1>SpineLog</h1>
+    <p class="lead">척추 질환 사용자의 통증 · 생활 기록을 바탕으로 운동을 규칙으로 판정하는 서비스</p>
 
-  <!-- 새 주차를 추가할 때는 아래 카드 하나를 복사해서 주소와 글자만 바꾸면 됩니다 -->
-  <a class="card" href="app/"><div><b>데모 앱</b><small>브라우저에서 직접 기록하고 판정 받아 보기</small></div><span class="tag">열기 →</span></a>
-  <a class="card" href="week8/"><div><b>Week 8 발표</b><small>API 23개 완성과 웹 공개</small></div><span class="tag">10/28</span></a>
-  <a class="card" href="week7/"><div><b>Week 7 발표</b><small>지난 발표</small></div><span class="tag">보관</span></a>
+    <!-- 새 주차를 추가할 때는 아래 카드 하나를 복사해서 주소와 글자만 바꾸면 됩니다 -->
+    <a class="card" href="app/">
+      <div><b>데모 앱</b><small>브라우저에서 직접 기록하고 판정 받아 보기</small></div><span class="tag">열기 →</span>
+    </a>
+    <a class="card" href="week8/">
+      <div><b>Week 8 발표</b><small>API 23개 완성과 웹 공개</small></div><span class="tag">10/28</span>
+    </a>
+    <a class="card" href="week7/">
+      <div><b>Week 7 발표</b><small>지난 발표</small></div><span class="tag">보관</span>
+    </a>
 
-  <footer>chanwlab.com</footer>
-</main>
+    <footer>chanwlab.com</footer>
+  </main>
 </body>
+
 </html>
