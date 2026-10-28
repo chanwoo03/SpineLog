@@ -14,6 +14,7 @@
 <!--
   SpineLog 데모 앱
   · data.js : DB에서 꺼낸 기준 데이터(질환 · 운동 · 규칙 19개 …)
+  · medical.js : 의학 문구(통증 점수 설명 · 의학 정보 · 퀴즈) — 초안, 직접 고치는 파일
   · api.js  : 브라우저 안의 가짜 서버. FastAPI와 같은 주소 23개 · 같은 응답 모양
   · app.js  : 화면. 항상 api("GET", "/api/…")로만 데이터를 주고받음
   나중에 NAS 서버가 생기면 api.js만 fetch로 바꾸면 화면은 그대로 씁니다.
@@ -39,12 +40,14 @@
   <a data-tab="home" href="#home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>홈</a>
   <a data-tab="pain" href="#pain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>통증</a>
   <a data-tab="checkin" href="#checkin"><svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>체크인</a>
-  <a data-tab="activity" href="#activity"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>활동</a>
+  <a data-tab="reco" href="#reco"><svg viewBox="0 0 24 24"><path d="M6.5 8v8M17.5 8v8M3.5 10v4M20.5 10v4M6.5 12h11"/></svg>운동</a>
+  <a data-tab="learn" href="#learn"><svg viewBox="0 0 24 24"><path d="M4 5.5A2 2 0 0 1 6 4h5v15H6a2 2 0 0 0-2 1.5zM20 5.5A2 2 0 0 0 18 4h-5v15h5a2 2 0 0 1 2 1.5z"/></svg>정보</a>
   <a data-tab="me" href="#me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>내 정보</a>
 </nav>
 
 <noscript><p class="wrap">이 데모는 자바스크립트가 필요합니다.</p></noscript>
 <script src="data.js"></script>
+<script src="medical.js"></script>
 <script src="api.js"></script>
 <script src="app.js"></script>
 </body>

@@ -32,7 +32,7 @@ function freshDB() {
   return {
     user: { user_id: "demo", username: "시연 사용자", timezone: "Asia/Seoul" },
     goals: null, conditions: [], symptoms: [],
-    pain_logs: [], guides: [], checkins: [], activity_types: [], activity_logs: [], exercise_logs: [],
+    pain_logs: [], guides: [], checkins: [], activity_types: [], activity_logs: [], exercise_logs: [], content_views: [], quiz_attempts: [],
     seq: { log: 0, guide: 0, atype: 0, alog: 0, exlog: 0 }, onboarded: false,
   };
 }
@@ -296,9 +296,30 @@ const ROUTES = [
       exercise: { today_count: db.exercise_logs.filter(e => localDate(e.performed_at, tz) === today).length },
       pain_trend_7d: painTrend(db, 7), todo };
   }],
-  // 의학 콘텐츠 · contents.py (콘텐츠 데이터는 아직 없음)
-  ["GET", /^\/api\/contents$/, () => ({ categories: [], items: [] })],
-  ["GET", /^\/api\/contents\/(\d+)$/, () => fail(404, "콘텐츠가 없습니다")],
+  // 의학 콘텐츠 · contents.py (내용은 medical.js — 실제 서버에선 DB의 medical_contents · content_quizzes)
+  ["GET", /^\/api\/contents$/, (db, b, m, q) => {
+    const views = db.content_views || [], cond = q.condition_id ? +q.condition_id : null, cat = q.category_id ? +q.category_id : null;
+    const items = MEDICAL.contents.filter(c => (cond == null || c.condition_id === cond) && (cat == null || c.category_id === cat)).map(c => ({
+      content_id: c.content_id, title: c.title, summary: c.summary, category_id: c.category_id,
+      category_name: MEDICAL.categories.find(k => k.category_id === c.category_id).category_name,
+      condition_id: c.condition_id, disease_name: c.condition_id ? COND[c.condition_id].name : null,
+      quiz_count: c.quizzes.length, viewed: views.some(v => v.content_id === c.content_id) }));
+    return { categories: MEDICAL.categories.map(k => ({ ...k, broader_category_id: null })), items };
+  }],
+  ["GET", /^\/api\/contents\/(\d+)$/, (db, b, m) => {
+    const c = MEDICAL.contents.find(x => x.content_id === +m[1]); if (!c) fail(404, "콘텐츠가 없습니다");
+    (db.content_views = db.content_views || []).push({ content_id: c.content_id, viewed_at: utcNow() }); db.__write = true;   // 열람 기록 INSERT
+    return { content_id: c.content_id, title: c.title, summary: c.summary, body: c.body, source_url: c.source_url || null,
+      category_name: MEDICAL.categories.find(k => k.category_id === c.category_id).category_name,
+      disease_name: c.condition_id ? COND[c.condition_id].name : null,
+      quizzes: c.quizzes.map(z => ({ quiz_id: z.quiz_id, question: z.question })) };   // 정답은 안 보냄
+  }],
+  ["POST", /^\/api\/quizzes\/(\d+)\/attempts$/, (db, b, m) => {
+    const z = MEDICAL.contents.flatMap(c => c.quizzes).find(x => x.quiz_id === +m[1]); if (!z) fail(404, "퀴즈가 없습니다");
+    if (typeof b.answer !== "boolean") fail(422, "answer는 true(O) 또는 false(X)");
+    (db.quiz_attempts = db.quiz_attempts || []).push({ quiz_id: z.quiz_id, user_answer: b.answer, attempted_at: utcNow() });
+    return [201, { quiz_id: z.quiz_id, your_answer: b.answer, correct_answer: z.correct_answer, is_correct: b.answer === z.correct_answer, explanation: z.explanation }];
+  }],
 ];
 
 /* ---------- 시연용 샘플: 지난 6일치 체크인 · 통증 기록 ---------- */
@@ -333,7 +354,7 @@ async function api(method, url, body) {
     let out = route[2](db, body ?? {}, path.match(route[1]), q);
     if (Array.isArray(out) && typeof out[0] === "number" && out.length === 2) [status, out] = out;
     data = out;
-    if (method !== "GET") saveDB(db);
+    if (method !== "GET" || db.__write) { delete db.__write; saveDB(db); }
   } catch (e) {
     if (!(e instanceof ApiError)) throw e;
     status = e.status; data = { detail: e.detail };      // 실패하면 복사본을 버림 = 아무것도 안 바뀜

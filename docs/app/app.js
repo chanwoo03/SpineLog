@@ -20,6 +20,17 @@ function toast(msg, bad = false) {
   clearTimeout(toast._t); toast._t = setTimeout(() => t.className = "toast", 2600);
 }
 function errText(r) { const d = r.data && r.data.detail; return typeof d === "string" ? d : "입력값을 확인해 주세요"; }
+function draftTag() { return MEDICAL.DRAFT ? `<span class="draft">초안 · 검토 전</span>` : ""; }
+function draftBanner() { return MEDICAL.DRAFT ? `<div class="draftbox"><b>초안 · 검토 전</b> 이 내용은 수업 시연용 초안이며, 출처 확인과 검토를 거쳐 고칠 예정입니다. 진단 · 치료는 의료진과 상의하세요.</div>` : ""; }
+/* 표정 그림 (0~10 → 6단계). 직접 그린 단순한 얼굴 */
+function face(n, size = 40) {
+  const i = Math.round(n / 2), col = ["#3A8A5C", "#6FA34F", "#C9A227", "#E0A13A", "#D9692E", "#C0392B"][i];
+  const curve = [9, 6, 3, -1, -5, -8][i], my = 31 - curve / 2;
+  const brow = i >= 4 ? `<path d="M13 15 l6 2 M35 15 l-6 2" stroke="${col}" stroke-width="2.2" stroke-linecap="round"/>` : "";
+  return `<svg class="face" width="${size}" height="${size}" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="${col}22" stroke="${col}" stroke-width="2.4"/>
+    ${brow}<circle cx="17" cy="20" r="2.4" fill="${col}"/><circle cx="31" cy="20" r="2.4" fill="${col}"/>
+    <path d="M15 ${my} Q24 ${my + curve} 33 ${my}" fill="none" stroke="${col}" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+}
 function statusBadge(s) { return s ? `<span class="badge st-${s}">${STATUS_TEXT[s]}</span>` : ""; }
 
 /* ---------- 판정 결과 카드 (저장 직후 · 기록 상세가 같이 씀) ---------- */
@@ -122,23 +133,36 @@ const SCREENS = {
           ${ck && ck.prev_day_steps != null ? `<div class="big">${ck.prev_day_steps.toLocaleString()}</div>${bar(ck.prev_day_steps, ck.steps_goal)}<p class="muted small">목표 ${ck.steps_goal.toLocaleString()}보 ${ck.steps_ok ? "· 달성" : ""}</p>`
                : `<p class="muted small">기록 없음</p>`}</a>
         <a class="card link-card" href="#activity"><h3>오늘 활동</h3><div class="big">${d.activity.today_minutes}<small>분</small></div><p class="muted small">${d.activity.today_count}건</p></a>
-        <a class="card link-card" href="#exercise"><h3>오늘 운동</h3><div class="big">${d.exercise.today_count}<small>회</small></div><p class="muted small">판정 보고 한 운동</p></a>
+        <a class="card link-card" href="#reco"><h3>오늘 운동</h3><div class="big">${d.exercise.today_count}<small>회</small></div><p class="muted small">판정 보고 한 운동</p></a>
       </div>
-      <div class="card soft"><h3>의학 콘텐츠</h3><p class="muted small">API는 준비됐고, 질환별 내용은 출처와 함께 작성 중입니다.</p></div>`;
+      <a class="card link-card row between" href="#learn"><div><h3>의학 정보 · OX 퀴즈</h3><p class="muted small">질환 기본 정보와 위험 신호를 퀴즈로 확인해 보세요</p></div><b>→</b></a>`;
   },
 
   /* ---- 통증 기록 (GET /api/pain-options → POST /api/pain-logs) ---- */
   async pain() {
-    const o = (await api("GET", "/api/pain-options")).data;
+    const o = (await api("GET", "/api/pain-options")).data, G = MEDICAL.painGuide;
     view().innerHTML = `
       <div class="greet"><div class="muted">POST /api/pain-logs</div><h1>지금 통증 기록</h1></div>
       <div class="card">
-        <h3>얼마나 아픈가요?</h3>
-        <div class="row between"><div class="score" id="sv">5</div><div class="right"><b id="sl"></b><div class="muted small" id="sr"></div></div></div>
-        <input type="range" id="score" min="0" max="10" value="5" class="range">
-        <div class="row between muted small"><span>0 통증 없음</span><span>10 최악</span></div>
+        <div class="row between"><h3>얼마나 아픈가요?</h3>${draftTag()}</div>
+        <div class="row painhead"><div id="face"></div><div class="score" id="sv">5</div><div><b id="sl"></b><div class="muted small" id="sr"></div></div></div>
+        <input type="range" id="score" min="0" max="10" value="5" class="range" aria-label="통증 점수">
+        <div class="nums" id="nums">${G.map(g => `<button type="button" data-n="${g.score}">${g.score}</button>`).join("")}</div>
+        <div class="row between muted small"><span>0 통증 없음</span><span>10 가장 심함</span></div>
+        <div class="life">
+          <p class="feel" id="feel"></p>
+          <div class="lrow"><span>일 · 공부</span><b id="ld"></b></div>
+          <div class="lrow"><span>앉기 · 걷기</span><b id="lm"></b></div>
+          <div class="lrow"><span>잠</span><b id="lsl"></b></div>
+        </div>
         <p class="hint" id="sg"></p>
       </div>
+      <details class="card" id="qbox"><summary><b>잘 모르겠다면: 질문으로 점수 찾기</b></summary>
+        ${MEDICAL.painQuestions.map((qq, i) => `<div class="qrow"><p>${i + 1}. ${esc(qq)}</p>
+          <div class="seg">${["아니요", "조금", "많이"].map((t, v) => `<label><input type="radio" name="q${i}" value="${v}">${t}</label>`).join("")}</div></div>`).join("")}
+        <button class="btn block" id="suggest">점수 제안 받기</button>
+        <p class="hint" id="sugout" hidden></p>
+      </details>
       <div class="card">
         <h3>어디가 아픈가요?</h3>
         <select id="loc" class="input">${o.locations.map(l => `<option value="${l.location_id}">${esc(l.location_name)}</option>`).join("")}</select>
@@ -146,17 +170,100 @@ const SCREENS = {
         <div class="chips" id="types">${o.types.map((t, i) => `<label class="chip${i === 0 ? " on" : ""}"><input type="radio" name="typ" value="${t.pain_type_id}" ${i === 0 ? "checked" : ""}>${esc(t.pain_type_name)}</label>`).join("")}</div>
       </div>
       <button class="btn primary block lg" id="save">저장하고 판정 받기</button>`;
-    const show = () => { const s = o.scale.find(x => x.pain_score === +$("#score").value);
-      $("#sv").textContent = s.pain_score; $("#sl").textContent = s.level_name; $("#sr").textContent = `${s.severity_label} · ${s.nrs_range}`; $("#sg").textContent = s.action_guide;
-      $("#sv").className = "score" + (s.pain_score >= 7 ? " hi" : ""); };
+    const show = () => { const n = +$("#score").value, s = o.scale.find(x => x.pain_score === n), g = G.find(x => x.score === n);
+      $("#sv").textContent = n; $("#sl").textContent = s.level_name; $("#sr").textContent = `${s.severity_label} · ${s.nrs_range}`; $("#sg").textContent = s.action_guide;
+      $("#sv").className = "score" + (n >= 7 ? " hi" : ""); $("#face").innerHTML = face(n, 64);
+      $("#feel").textContent = g.feel; $("#ld").textContent = g.daily; $("#lm").textContent = g.move; $("#lsl").textContent = g.sleep;
+      document.querySelectorAll("#nums button").forEach(x => x.classList.toggle("on", +x.dataset.n === n)); };
     $("#score").oninput = show; show();
+    $("#nums").onclick = e => { const x = e.target.closest("button"); if (x) { $("#score").value = x.dataset.n; show(); } };
     $("#types").onchange = e => { document.querySelectorAll("#types .chip").forEach(c => c.classList.toggle("on", c.querySelector("input").checked)); };
+    $("#qbox").onchange = e => { const l = e.target.closest(".seg"); if (l) l.querySelectorAll("label").forEach(x => x.classList.toggle("on", x.querySelector("input").checked)); };
+    $("#suggest").onclick = () => {
+      const ans = MEDICAL.painQuestions.map((_, i) => document.querySelector(`input[name=q${i}]:checked`));
+      if (ans.some(a => !a)) return toast("질문에 모두 답해 주세요", true);
+      const sum = ans.reduce((t, a) => t + +a.value, 0), r = MEDICAL.painSuggest.find(x => sum <= x.max), pick = Math.round((r.from + r.to) / 2);
+      $("#sugout").hidden = false; $("#sugout").textContent = `${r.from}~${r.to}점 정도로 보여요. ${pick}점으로 맞춰 두었으니, 위 생활 예시를 보고 가까운 쪽으로 조정하세요.`;
+      $("#score").value = pick; show(); window.scrollTo({ top: 0, behavior: "smooth" });
+    };
     $("#save").onclick = async () => {
       const r = await api("POST", "/api/pain-logs", { pain_score: +$("#score").value, pain_location_id: +$("#loc").value,
         pain_type_id: +document.querySelector("input[name=typ]:checked").value });
       if (!r.ok) return toast(errText(r), true);
       location.hash = `#log/${r.data.log_id}?new=1`;
     };
+  },
+
+  /* ---- 운동 추천 (GET /api/dashboard → GET /api/pain-logs/{id}) ---- */
+  async reco() {
+    const d = (await api("GET", "/api/dashboard")).data, last = d.pain.last;
+    const det = last ? (await api("GET", `/api/pain-logs/${last.log_id}`)).data : null;
+    const EX = Object.fromEntries(REF.exercises.map(e => [e.id, e]));
+    const exCard = (e, g) => `
+      <div class="excard${g ? " g-" + g.level_code : ""}">
+        <div class="row between"><b>${esc(e.name)}</b>${g ? `<span class="lv lv-${g.level_code}">${g.level_label}</span>` : ""}</div>
+        <p class="muted small">${esc(e.description || "")}</p>
+        ${g ? `<p class="why">${esc(g.message)} <span class="rule">규칙 ${g.rule_id}</span></p>` : ""}
+        ${e.caution ? `<p class="caution">주의 · ${esc(e.caution)}</p>` : ""}
+        ${!g || g.level_code !== "CONTRAINDICATED" ? `<a class="link" href="#exercise?${g ? `guide=${g.guide_id}&` : ""}ex=${e.id}">이 운동 했어요 →</a>` : `<p class="muted small">오늘은 하지 않아요</p>`}
+      </div>`;
+    const by = c => det ? det.guides.filter(g => g.level_code === c) : [];
+    const judged = new Set(det ? det.guides.map(g => g.exercise_id) : []);
+    const sec = (c, title, empty) => { const gs = by(c); return gs.length ? `<h3 class="sec">${title} <span class="muted small">${gs.length}개</span></h3>${gs.map(g => exCard(EX[g.exercise_id] || { name: g.exercise_name }, g)).join("")}` : (empty ? `<h3 class="sec">${title}</h3><p class="muted small">${empty}</p>` : ""); };
+    view().innerHTML = `
+      <div class="greet"><div class="muted">${dateLabel(d.date)} · 오늘의 판정 기준</div><h1>운동 추천</h1></div>
+      ${last ? `<a class="card link-card row between" href="#log/${last.log_id}"><div class="row"><div class="score-xs${last.pain_score >= 7 ? " hi" : ""}">${last.pain_score}</div>
+          <div><b>오늘 마지막 통증 기록</b><div class="muted small">${timeLabel(last.recorded_at)} · ${esc(last.severity_label)}</div></div></div>${statusBadge(last.assessment_status)}</a>
+          ${last.pain_score >= 7 ? `<div class="alert red"><b>통증 ${last.pain_score}점</b> · 지금은 운동보다 안정이 우선입니다.</div>` : ""}
+          ${det.assessment_status === "PARTIAL" ? `<a class="todo" href="#checkin"><span>아침 체크인을 하면 판정이 더 정확해져요</span><b>→</b></a>` : ""}`
+        : `<div class="card"><p>오늘 통증 기록이 없어 판정이 없어요.</p><a class="btn primary" href="#pain">통증 기록하고 판정 받기</a></div>`}
+      ${sec("RECOMMENDED", "추천", last ? "오늘 추천으로 나온 운동이 없어요" : "")}
+      ${sec("CAUTION", "주의", "")}
+      ${sec("CONTRAINDICATED", "금기", "")}
+      <details class="card"><summary><b>판정이 없는 운동</b> <span class="muted small">${REF.exercises.filter(e => !judged.has(e.id)).length}개 · 오늘 규칙에 걸리지 않음</span></summary>
+        ${REF.exercises.filter(e => !judged.has(e.id)).map(e => exCard(e, null)).join("")}
+      </details>
+      <p class="muted small">판정은 통증을 기록할 때 질환 · 증상 · 체크인 · 최근 동작으로 규칙 19개를 맞춰 정해집니다. 운동 설명 · 주의 문구는 DB의 운동 데이터입니다.</p>`;
+  },
+
+  /* ---- 의학 정보 목록 · 본문 · OX 퀴즈 (contents.py) ---- */
+  async learn(id, q) {
+    if (id) return SCREENS.learnOne(id);
+    const r = (await api("GET", `/api/contents${q.cat ? `?category_id=${q.cat}` : ""}`)).data;
+    view().innerHTML = `
+      <div class="greet"><div class="muted">GET /api/contents</div><h1>의학 정보</h1></div>
+      ${draftBanner()}
+      <div class="chips nav">${[{ category_id: "", category_name: "전체" }, ...r.categories].map(c => `<a class="chip${String(q.cat || "") === String(c.category_id) ? " on" : ""}" href="#learn${c.category_id ? `?cat=${c.category_id}` : ""}">${esc(c.category_name)}</a>`).join("")}</div>
+      ${r.items.map(i => `<a class="card link-card" href="#learn/${i.content_id}">
+        <div class="row between"><span class="tag">${esc(i.category_name)}${i.disease_name ? ` · ${esc(i.disease_name)}` : ""}</span>${i.viewed ? `<span class="muted small">읽음</span>` : `<span class="newdot">새 글</span>`}</div>
+        <h3>${esc(i.title)}</h3><p class="muted small">${esc(i.summary)}</p><p class="small qn">OX 퀴즈 ${i.quiz_count}문제 →</p></a>`).join("") || `<div class="card"><p class="muted">이 분류에는 아직 글이 없어요.</p></div>`}`;
+  },
+  async learnOne(id) {
+    const r = await api("GET", `/api/contents/${id}`);
+    if (!r.ok) { view().innerHTML = `<div class="card"><p>${esc(errText(r))}</p><a class="btn" href="#learn">목록으로</a></div>`; return; }
+    const c = r.data;
+    view().innerHTML = `
+      <div class="greet"><div class="muted">GET /api/contents/${id}</div><h1>${esc(c.title)}</h1></div>
+      ${draftBanner()}
+      <div class="card article">
+        <span class="tag">${esc(c.category_name)}${c.disease_name ? ` · ${esc(c.disease_name)}` : ""}</span>
+        ${c.body.split("\n\n").map(p => `<p>${esc(p).replace(/\n/g, "<br>")}</p>`).join("")}
+        <p class="muted small">출처: ${c.source_url ? `<a class="link small" href="${esc(c.source_url)}" target="_blank" rel="noopener">${esc(c.source_url)}</a>` : "작성 예정"}</p>
+      </div>
+      ${c.quizzes.length ? `<h3 class="sec">OX 퀴즈</h3>` : ""}
+      ${c.quizzes.map((z, i) => `<div class="card quiz" data-q="${z.quiz_id}">
+        <p><b>Q${i + 1}.</b> ${esc(z.question)}</p>
+        <div class="ox"><button class="btn" data-a="true">O</button><button class="btn" data-a="false">X</button></div>
+        <div class="qres"></div></div>`).join("")}
+      <a class="btn" href="#learn">목록으로</a>`;
+    document.querySelectorAll(".quiz").forEach(box => box.onclick = async e => {
+      const b = e.target.closest("button[data-a]"); if (!b || box.dataset.done) return;
+      const res = await api("POST", `/api/quizzes/${box.dataset.q}/attempts`, { answer: b.dataset.a === "true" });
+      if (!res.ok) return toast(errText(res), true);
+      const z = res.data; box.dataset.done = 1;
+      box.querySelectorAll("button[data-a]").forEach(x => { x.disabled = true; if ((x.dataset.a === "true") === z.correct_answer) x.classList.add("right"); else if (x === b) x.classList.add("wrong"); });
+      box.querySelector(".qres").innerHTML = `<div class="alert ${z.is_correct ? "good" : "red"}"><b>${z.is_correct ? "정답이에요" : "아쉬워요"} · 정답 ${z.correct_answer ? "O" : "X"}</b><br>${esc(z.explanation)}</div>`;
+    });
   },
 
   /* ---- 기록 1건 (GET /api/pain-logs/{id}) ---- */
@@ -351,7 +458,7 @@ async function route() {
   const db = loadDB(); TZ = db.user.timezone;
   let screen = name || (db.onboarded ? "home" : "welcome");
   if (!SCREENS[screen]) screen = "home";
-  document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.tab === ({ log: "home", records: "home", exercise: "home", welcome: "home" }[screen] || screen)));
+  document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.tab === ({ log: "home", records: "home", activity: "home", exercise: "reco", welcome: "home" }[screen] || screen)));
   await SCREENS[screen](arg, q);
   window.scrollTo(0, 0);
   if ($("#dev").open) renderDev();
