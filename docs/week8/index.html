@@ -201,6 +201,42 @@ body:hover #hud{opacity:.8}
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week8 · 10</p>
 <aside>지난주 어려웠던 점이 시간대였는데, 7일 추이를 만들면서 같은 문제가 다시 나왔습니다. SQL에서 DATE로 날짜를 자르면 UTC 기준이라 한국 아침 기록이 전날로 묶입니다. 그래서 먼저 현지 기준 7일 범위를 UTC로 바꿔서 기록을 가져오고, 파이썬에서 기록마다 현지 시각으로 바꾼 뒤 날짜별로 묶었습니다. 기록이 없는 날도 0으로 채워서, 화면 그래프에서 빈 날을 바로 보여 줄 수 있게 했습니다. 아래 줄은 테스트 DB에서 나온 실제 응답 한 줄입니다.</aside>
 </section>
+<section id="multi" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">어려웠던 점 3 · 하루에 통증을 여러 번 기록하면</p>
+<h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2">하루 2번 기록, 그래프에는 무엇을 찍나</h2>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:22px 34px;display:flex;gap:32px;align-items:center">
+<p style="font-size:26px;font-weight:700;color:#1B2430;white-space:nowrap">예) 10/27</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#2F6FB2">08:00 → 9점 · 21:00 → 3점</p>
+<p style="font-size:24px;color:#4A5568">그래프에서 이 날은 점 하나인데, 몇 점으로 찍어야 할까?</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+<div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:26px 28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;color:#6B7280">평균</p><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:52px;font-weight:600;color:#2F6FB2">6</p>
+<p style="font-size:23px;line-height:1.45;color:#1E6B34">+ 하루 전체 흐름</p><p style="font-size:23px;line-height:1.45;color:#9A4F12">− 아침의 9점이 묻힘</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:26px 28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;color:#6B7280">최고</p><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:52px;font-weight:600;color:#B42318">9</p>
+<p style="font-size:23px;line-height:1.45;color:#1E6B34">+ 가장 심했던 순간</p><p style="font-size:23px;line-height:1.45;color:#9A4F12">− 하루 종일 아팠던 것처럼 보임</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:26px 28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;color:#6B7280">마지막</p><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:52px;font-weight:600;color:#1B2430">3</p>
+<p style="font-size:23px;line-height:1.45;color:#1E6B34">+ 그날 끝 상태</p><p style="font-size:23px;line-height:1.45;color:#9A4F12">− 9점 기록이 안 보임</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:26px 28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;color:#6B7280">전부 찍기</p><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:52px;font-weight:600;color:#1B2430">9 · 3</p>
+<p style="font-size:23px;line-height:1.45;color:#1E6B34">+ 빠지는 기록 없음</p><p style="font-size:23px;line-height:1.45;color:#9A4F12">− 7일이면 점이 많아 읽기 어려움</p>
+</div>
+</div>
+<div style="background:#E2F1E5;border-radius:16px;padding:26px 34px;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:28px;font-weight:700;color:#1E6B34">그래서: API는 하나로 정하지 않고 네 값을 모두 내려줌</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#1B2430">{"date": "2026-10-27", "count": 2, "avg": 6.0, "max": 9, "last": 3}</p>
+<p style="font-size:24px;line-height:1.5;color:#4A5568">지금 데모 그래프는 평균으로 그림. 7점 이상이 있던 날을 따로 표시할지는 React 화면에서 정할 예정</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week8 · 11</p>
+<aside>7일 추이를 만들면서 생긴 또 하나의 고민은, 하루에 통증을 두 번 이상 기록하는 경우입니다. 예를 들어 아침에 9점, 저녁에 3점을 기록했다면 그래프에는 이 날을 점 하나로 찍어야 하는데, 평균으로 찍으면 6점이 되어 아침의 심한 통증이 묻히고, 최고점으로 찍으면 하루 종일 아팠던 것처럼 보이고, 마지막 값으로 찍으면 9점 기록이 사라집니다. 기록을 전부 찍으면 빠지는 것은 없지만 7일치가 되면 읽기 어렵습니다. 그래서 API에서는 하나로 정하지 않고 횟수, 평균, 최고, 마지막 값을 모두 내려주고, 화면에서 고를 수 있게 했습니다. 지금 데모 그래프는 평균을 선으로 그리고 있고, 평균이 낮아도 7점 이상이 있던 날을 따로 표시하는 방법은 React 화면을 만들 때 정하려고 합니다.</aside>
+</section>
 <section id="rules" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
 <div style="display:flex;flex-direction:column;gap:12px">
 <p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">exercise_guide_rules 19개 · 데이터는 아직 고치지 않음</p>
@@ -214,7 +250,7 @@ body:hover #hud{opacity:.8}
 <div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:14px;padding:22px 26px;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:28px;font-weight:700">원인 추정</h3><p style="font-size:24px;line-height:1.5;color:#4A5568">맞는 번호가 지금보다 1~2 작음 → 운동을 추가하며 번호가 밀린 것으로 보임</p></div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week8 · 11</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week8 · 12</p>
 <aside>판정 결과는 규칙 데이터가 정하기 때문에, 규칙 19개를 하나씩 점검했습니다. 규칙에 적힌 운동 번호와 안내 문구 속 운동을 비교했더니, 13개가 서로 다른 운동을 가리키고 있었습니다. 특히 규칙 2번은 허리디스크 사용자에게 저강도 플랭크를 금기로 내보내고 있었습니다. 맞는 번호가 대부분 지금보다 1이나 2 작아서, 운동 목록에 운동을 추가하면서 번호가 밀린 것으로 보고 있습니다. 의학 판단이 들어가는 부분이라, 번호를 고칠지 문구를 고칠지는 근거를 확인한 뒤 결정하려고 데이터는 아직 고치지 않았습니다.</aside>
 </section>
 <section id="web" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:28px">
@@ -233,7 +269,7 @@ body:hover #hud{opacity:.8}
 </div>
 </div>
 <p style="font-size:26px;color:#4A5568">→ 웹호스팅은 파이썬 서버를 못 켜서, 서버 대신 같은 로직을 재현. 같은 입력 8가지를 실제 서버와 비교해 결과 일치 확인</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week8 · 12</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week8 · 13</p>
 <aside>만든 것을 제 홈페이지 chanwlab.com에 올렸습니다. 대표 페이지는 제 프로젝트들의 입구이고, SpineLog 페이지에서는 구조 그림, API 목록, 지난주 실행 결과와 판정 미리보기를 볼 수 있습니다. 홈페이지가 일반 웹호스팅이라 파이썬 서버를 켤 수 없어서, 판정 미리보기는 서버의 규칙 로직을 브라우저에서 똑같이 다시 짰습니다. 정말 같은지 확인하려고 같은 입력 8가지를 실제 서버와 이 페이지에 넣어 비교했고, 판정, 상태, 문구, 순서가 모두 같았습니다. 실제 서버는 NAS에 배포한 뒤 연결할 예정입니다.</aside>
 </section>
 <section id="learned" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:36px">
@@ -255,7 +291,7 @@ body:hover #hud{opacity:.8}
 <div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:32px;font-weight:700">각 부분의 역할을 알아야 배포를 설계할 수 있다</h3><p style="font-size:26px;line-height:1.5;color:#4A5568">uvicorn · FastAPI · db.py · MySQL이 각자 무슨 일을 하는지 정리하고 나서 웹호스팅과 NAS의 차이가 보임</p></div>
 </div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week8 · 13</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week8 · 14</p>
 <aside>이번 주에 배운 점은 세 가지입니다. 첫째, ERD만 볼 때는 몰랐던 빈틈이 실제로 저장하는 코드를 짜면서 보였습니다. 둘째, 판정 로직이 맞아도 규칙 데이터의 번호가 틀리면 틀린 판정이 그대로 나간다는 것을 확인했습니다. 셋째, 요청이 지나가는 각 부분의 역할을 정리하고 나서야, 왜 일반 웹호스팅에서는 서버를 못 돌리고 NAS가 필요한지 이해했습니다.</aside>
 </section>
 <section id="next" data-transition="fade" style="background:#1B2430;color:#F7F6F2;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;gap:40px">
@@ -269,7 +305,7 @@ body:hover #hud{opacity:.8}
 <div style="background:#253142;border-radius:16px;padding:30px 34px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#8FB8E3">3</p><h3 style="font-size:34px;font-weight:700;color:#F7F6F2">회원가입 · 로그인</h3><p style="font-size:26px;line-height:1.5;color:#C9D3DE">JWT 토큰 + 비밀번호 해시, deps.py를 토큰 검사로 교체</p></div>
 <div style="background:#253142;border-radius:16px;padding:30px 34px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#8FB8E3">4</p><h3 style="font-size:34px;font-weight:700;color:#F7F6F2">React 화면 시작</h3><p style="font-size:26px;line-height:1.5;color:#C9D3DE">온보딩 → 체크인 → 통증 기록 · 판정 → 대시보드</p></div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#8A94A0">S/W Week8 · 14 · 감사합니다</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#8A94A0">S/W Week8 · 15 · 감사합니다</p>
 <aside>다음 주에는 네 가지를 하겠습니다. 먼저 이번에 만든 API를 제 PC에서 전부 실행해 확인합니다. 그다음 규칙 데이터를 근거를 찾아 고칩니다. 로그인 기능을 만들어 시연 사용자 대신 실제 사용자로 동작하게 하고, 남는 시간에 React 화면을 시작하겠습니다. 감사합니다.</aside>
 </section>
 
