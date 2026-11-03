@@ -18,29 +18,31 @@ class PainLogCreate(BaseModel):
       user_id     : 서버가 로그인 정보로 정함 (deps.get_current_user)
       recorded_at : '지금' 기록이므로 서버가 UTC로 정함
     """
+
     # ge=0, le=10 : 0 이상 10 이하. 11을 보내면 422
     pain_score: int = Field(..., ge=0, le=10, examples=[6])
-    pain_location_id: int = Field(..., examples=[1])   # 1 = 허리 중앙
-    pain_type_id: int = Field(..., examples=[2])       # 2 = 저릿한
-
-
+    pain_location_id: int = Field(..., examples=[1])  # 1 = 허리 중앙
+    pain_type_id: int = Field(..., examples=[2])  # 2 = 저릿한
 
 
 # ---- 아래는 API-3에서 추가 : 판정 결과 응답 ----
 
+
 class GuideItem(BaseModel):
     """운동 하나의 판정 (pain_log_guide 1행)"""
+
     guide_id: int
     exercise_id: int
     exercise_name: str
-    level_code: str            # RECOMMENDED / CAUTION / CONTRAINDICATED (화면 색 구분용)
-    level_label: str | None    # 추천 / 주의 / 금기
-    message: str | None        # 판정 '당시' 안내 문구
-    rule_id: int | None        # 이 판정을 만든 규칙 → "왜?" 추적
+    level_code: str  # RECOMMENDED / CAUTION / CONTRAINDICATED (화면 색 구분용)
+    level_label: str | None  # 추천 / 주의 / 금기
+    message: str | None  # 판정 '당시' 안내 문구
+    rule_id: int | None  # 이 판정을 만든 규칙 → "왜?" 추적
 
 
 class PainLogDetail(BaseModel):
     """통증 기록 1건 + 당시 판정. POST 응답과 상세 조회(API-4)가 같은 모양"""
+
     log_id: int
     recorded_at: datetime
     pain_score: int
@@ -48,7 +50,29 @@ class PainLogDetail(BaseModel):
     action_guide: str | None
     pain_location_name: str | None
     pain_type_name: str | None
-    assessment_status: str | None       # COMPLETED / PARTIAL / NO_MATCH / null(예전 기록)
-    missing_context: list[str] | None   # 예) ["MORNING_CHECKIN"]
-    guides: list[GuideItem]             # 금기 → 주의 → 추천 순서
-    basic_guide: str | None = None      # NO_MATCH일 때만 기본 안내
+    assessment_status: str | None  # COMPLETED / PARTIAL / NO_MATCH / null(예전 기록)
+    missing_context: list[str] | None  # 예) ["MORNING_CHECKIN"]
+    guides: list[GuideItem]  # 금기 → 주의 → 추천 순서
+    basic_guide: str | None = None  # NO_MATCH일 때만 기본 안내
+
+
+# ---- 아래는 API-4에서 추가 : 날짜별 목록 ----
+
+
+class PainLogSummary(BaseModel):
+    """목록의 한 줄 (판정 내용은 빼고 요약만)"""
+
+    log_id: int
+    recorded_at: datetime
+    pain_score: int
+    severity_label: str | None
+    pain_location_name: str | None
+    pain_type_name: str | None
+    assessment_status: str | None
+    guide_count: int  # 판정된 운동 개수
+
+
+class PainLogList(BaseModel):
+    date: str  # 조회한 날짜 (사용자 현지 날짜)
+    timezone: str  # 어떤 시간대 기준인지
+    items: list[PainLogSummary]

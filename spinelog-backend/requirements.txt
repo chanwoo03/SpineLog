@@ -5,4 +5,6 @@ sqlalchemy
 pymysql
 python-dotenv
 cryptography
-
+tzdata
+bcrypt
+PyJWT

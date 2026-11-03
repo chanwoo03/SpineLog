@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpineLog 통증 기록 테스트</title>
+<style>
+  :root {
+    --ink: #1B2430; --soft: #4A5568; --mute: #6B7280; --line: #DEDBD2;
+    --bg: #F7F6F2; --card: #FFFFFF; --tint: #E9EEF5;
+    --blue: #2F6FB2; --orange: #B5621A; --orange-bg: #FBEEDF;
+    --red: #A3262E; --red-bg: #F8E4E5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    font-size: 15px; line-height: 1.5;
+  }
+  header {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 18px 28px; background: var(--ink); color: #F2F0EA;
+  }
+  header h1 { margin: 0; font-size: 20px; }
+  header .sub { color: #BFC8D2; font-size: 13px; }
+  #server { font-size: 13px; padding: 4px 12px; border-radius: 999px; background: #26313F; }
+  main { max-width: 1200px; margin: 0 auto; padding: 24px 20px 48px; display: grid; gap: 20px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 860px) { .row { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
+  .card h2 { margin: 0 0 4px; font-size: 18px; }
+  .card .api { font-family: Consolas, "Courier New", monospace; font-size: 12px; color: var(--mute); margin-bottom: 14px; }
+  label.f { display: block; font-weight: 700; margin: 16px 0 8px; }
+  .scores { display: grid; grid-template-columns: repeat(11, 1fr); gap: 6px; }
+  .scores button, .chips button {
+    border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 8px 0;
+    font: inherit; cursor: pointer; color: var(--ink);
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips button { padding: 6px 12px; }
+  .scores button.on, .chips button.on { background: var(--blue); border-color: var(--blue); color: #fff; font-weight: 700; }
+  .scaleinfo { margin-top: 10px; padding: 10px 12px; background: var(--tint); border-radius: 8px; font-size: 14px; min-height: 44px; }
+  select { width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; font: inherit; background: #fff; }
+  .primary {
+    margin-top: 20px; width: 100%; padding: 12px; border: 0; border-radius: 10px;
+    background: var(--blue); color: #fff; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer;
+  }
+  .primary:disabled { opacity: .5; cursor: default; }
+  .muted { color: var(--mute); }
+  .empty { color: var(--mute); padding: 30px 0; text-align: center; }
+  .status { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 10px; margin-bottom: 14px; }
+  .status b { white-space: nowrap; }
+  .st-COMPLETED { background: var(--tint); }
+  .st-PARTIAL { background: var(--orange-bg); }
+  .st-NO_MATCH { background: #EEEFF1; }
+  .warn { background: var(--red-bg); color: var(--red); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-weight: 700; }
+  .meta { font-size: 13px; color: var(--soft); margin-bottom: 12px; }
+  .guide { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .lv { text-align: center; font-weight: 700; font-size: 13px; padding: 4px 0; border-radius: 6px; align-self: start; }
+  .lv-CONTRAINDICATED { background: var(--red-bg); color: var(--red); }
+  .lv-CAUTION { background: var(--orange-bg); color: var(--orange); }
+  .lv-RECOMMENDED { background: var(--tint); color: var(--blue); }
+  .guide .name { font-weight: 700; }
+  .guide .rule { font-size: 12px; color: var(--mute); }
+  .basic { background: #EEEFF1; border-radius: 10px; padding: 12px 14px; }
+  details { margin-top: 14px; }
+  summary { cursor: pointer; color: var(--soft); font-size: 13px; }
+  pre { background: var(--ink); color: #E6EAF0; padding: 12px; border-radius: 8px; font-size: 12px; overflow: auto; max-height: 320px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: var(--tint); }
+  .tag { font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+  .tag.COMPLETED { background: var(--tint); color: var(--blue); }
+  .tag.PARTIAL { background: var(--orange-bg); color: var(--orange); }
+  .tag.NO_MATCH { background: #EEEFF1; color: var(--soft); }
+  .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+  .toolbar input { padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+  .ghost { border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 6px 12px; font: inherit; cursor: pointer; }
+  .tests { display: grid; gap: 8px; }
+  .testres { font-family: Consolas, "Courier New", monospace; font-size: 13px; background: var(--bg); border-radius: 8px; padding: 10px 12px; white-space: pre-wrap; }
+  .note { font-size: 12px; color: var(--mute); margin-top: 8px; }
+  svg text { font-family: inherit; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>SpineLog 통증 기록 테스트</h1>
+    <div class="sub">실제 FastAPI 서버와 DB를 사용합니다 · 사용자 = 서버의 시연 사용자(DEMO_USER_ID)</div>
+  </div>
+  <div id="server">서버 확인 중…</div>
+</header>
+
+<main>
+  <div class="row">
+    <!-- 1. 통증 입력 -->
+    <section class="card">
+      <h2>1. 통증 기록하기</h2>
+      <div class="api">GET /api/pain-options → POST /api/pain-logs</div>
+
+      <label class="f">통증 점수 (NRS 0~10)</label>
+      <div class="scores" id="scores"></div>
+      <div class="scaleinfo" id="scaleinfo"><span class="muted">점수를 고르면 설명이 나옵니다</span></div>
+
+      <label class="f" for="loc">통증 위치</label>
+      <select id="loc"><option value="">불러오는 중…</option></select>
+
+      <label class="f">통증 유형</label>
+      <div class="chips" id="types"></div>
+
+      <button class="primary" id="save" disabled>저장하고 운동 판정 받기</button>
+      <div class="note">저장하면 서버가 규칙 엔진을 실행하고, 판정까지 DB에 저장한 뒤 결과를 돌려줍니다.</div>
+    </section>
+
+    <!-- 2. 판정 결과 -->
+    <section class="card">
+      <h2>2. 판정 결과</h2>
+      <div class="api" id="resultApi">저장하거나 아래 목록에서 기록을 누르세요</div>
+      <div id="result"><div class="empty">아직 결과가 없습니다</div></div>
+    </section>
+  </div>
+
+  <div class="row">
+    <!-- 3. 날짜별 기록 -->
+    <section class="card">
+      <h2>3. 날짜별 기록</h2>
+      <div class="api">GET /api/pain-logs?date=YYYY-MM-DD → 누르면 GET /api/pain-logs/{id}</div>
+      <div class="toolbar">
+        <input type="date" id="day">
+        <button class="ghost" id="reload">불러오기</button>
+        <span class="muted" id="tzinfo"></span>
+      </div>
+      <div id="list"><div class="empty">불러오는 중…</div></div>
+      <div class="note">목록의 기록을 누르면 규칙 엔진을 다시 돌리지 않고, 저장 당시의 판정을 그대로 불러옵니다.</div>
+    </section>
+
+    <!-- 4. 추이 + 검사 -->
+    <section class="card">
+      <h2>4. 최근 7일 통증 추이 <span class="muted" style="font-size:13px;font-weight:400">(화면 시연)</span></h2>
+      <div class="api">날짜별 목록 API를 7번 불러서 그린 그래프 · 날마다 가장 높은 점수</div>
+      <div id="trend"><div class="empty">불러오는 중…</div></div>
+
+      <h2 style="margin-top:22px">5. 입력 검사 시험</h2>
+      <div class="api">잘못된 요청을 보내 서버가 어떻게 막는지 확인</div>
+      <div class="tests">
+        <div class="toolbar">
+          <button class="ghost" id="t422">점수 11 보내기 → 422</button>
+          <button class="ghost" id="t422b">없는 위치 999 → 422</button>
+          <button class="ghost" id="t404">없는 기록 조회 → 404</button>
+        </div>
+        <div class="testres" id="testres">버튼을 누르면 서버 응답이 여기 나옵니다</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+const API = "";   // 같은 서버에서 열리므로 주소 앞부분 생략 (/api/...)
+
+const LEVEL_ORDER = ["CONTRAINDICATED", "CAUTION", "RECOMMENDED"];
+const STATUS_TEXT = {
+  COMPLETED: ["판정 완료", "필요한 자료가 모두 있어서 판정했습니다."],
+  PARTIAL:   ["부분 판정", "판정은 했지만 빠진 자료가 있습니다."],
+  NO_MATCH:  ["맞는 규칙 없음", "이 상태에 맞는 규칙이 없어 기본 안내만 드립니다. '추천'이 아닙니다."],
+};
+const MISSING_TEXT = { CONDITION: "질환 정보", MORNING_CHECKIN: "오늘 아침 체크인" };
+const SEVERITY_TEXT = { NONE: "통증 없음", MILD: "경도", MODERATE: "중등도", SEVERE: "중증" };
+
+const state = { score: null, type: null, scale: [] };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const sev = (s) => SEVERITY_TEXT[s] || s || "-";
+
+function localDate(d = new Date()) {
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+function fmtTime(iso) {
+  if (!iso) return "-";
+  return new Date(iso).toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+
+async function call(method, path, body) {
+  const res = await fetch(API + path, {
+    method,
+    headers: body ? { "Content-Type": "application/json" } : {},
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  let data = null;
+  try { data = await res.json(); } catch (e) { /* 본문 없음 */ }
+  return { ok: res.ok, status: res.status, data };
+}
+
+function errorText(r) {
+  const d = r.data && r.data.detail;
+  if (Array.isArray(d)) return d.map((e) => `${(e.loc || []).join(".")}: ${e.msg}`).join("\n");
+  return d || "알 수 없는 오류";
+}
+
+// ---------- 1. 선택지 ----------
+async function loadOptions() {
+  let r;
+  try { r = await call("GET", "/api/pain-options"); }
+  catch (e) {
+    $("server").textContent = "서버에 연결할 수 없음";
+    $("server").style.background = "#A3262E";
+    $("loc").innerHTML = '<option value="">서버가 꺼져 있습니다</option>';
+    return false;
+  }
+  if (!r.ok) { $("server").textContent = `선택지 오류 ${r.status}`; return false; }
+  $("server").textContent = "서버 연결됨";
+  $("server").style.background = "#2F6FB2";
+
+  state.scale = r.data.scale;
+  $("scores").innerHTML = "";
+  for (let s = 0; s <= 10; s++) {
+    const b = document.createElement("button");
+    b.textContent = s;
+    b.onclick = () => pickScore(s);
+    $("scores").appendChild(b);
+  }
+
+  // 위치: 상위 부위 아래에 하위 부위를 들여쓰기 (PART-OF)
+  const locs = r.data.locations;
+  const children = (pid) => locs.filter((l) => (l.part_of_location_id ?? null) === pid);
+  const opts = ['<option value="">위치를 고르세요</option>'];
+  const walk = (pid, depth) => {
+    for (const l of children(pid)) {
+      opts.push(`<option value="${l.location_id}">${"　".repeat(depth)}${depth ? "└ " : ""}${esc(l.location_name)}</option>`);
+      walk(l.location_id, depth + 1);
+    }
+  };
+  walk(null, 0);
+  const shown = new Set(opts.join("").match(/value="(\d+)"/g) || []);
+  for (const l of locs) if (!shown.has(`value="${l.location_id}"`)) opts.push(`<option value="${l.location_id}">${esc(l.location_name)}</option>`);
+  $("loc").innerHTML = opts.join("");
+  $("loc").onchange = updateSave;
+
+  $("types").innerHTML = "";
+  for (const t of r.data.types) {
+    const b = document.createElement("button");
+    b.textContent = t.pain_type_name;
+    b.onclick = () => {
+      state.type = t.pain_type_id;
+      [...$("types").children].forEach((c) => c.classList.toggle("on", c === b));
+      updateSave();
+    };
+    $("types").appendChild(b);
+  }
+  return true;
+}
+
+function pickScore(s) {
+  state.score = s;
+  [...$("scores").children].forEach((c, i) => c.classList.toggle("on", i === s));
+  const info = state.scale.find((x) => x.pain_score === s);
+  $("scaleinfo").innerHTML = info
+    ? `<b>${s}점 · ${esc(info.level_name)}</b> <span class="muted">(${esc(sev(info.severity_label))})</span><br>${esc(info.action_guide)}`
+    : `${s}점`;
+  updateSave();
+}
+
+function updateSave() {
+  $("save").disabled = !(state.score !== null && $("loc").value && state.type);
+}
+
+// ---------- 2. 저장 + 판정 ----------
+$("save").onclick = async () => {
+  $("save").disabled = true;
+  const body = { pain_score: state.score, pain_location_id: Number($("loc").value), pain_type_id: state.type };
+  const r = await call("POST", "/api/pain-logs", body);
+  updateSave();
+  if (!r.ok) {
+    $("resultApi").textContent = `POST /api/pain-logs → ${r.status}`;
+    $("result").innerHTML = `<div class="warn">저장 실패 (${r.status})<br>${esc(errorText(r))}</div>`;
+    return;
+  }
+  showDetail(r.data, `POST /api/pain-logs → ${r.status} (방금 저장)`);
+  $("day").value = localDate();
+  loadList();
+  loadTrend();
+};
+
+function showDetail(d, apiText) {
+  $("resultApi").textContent = apiText;
+  const st = STATUS_TEXT[d.assessment_status] || ["상태 없음", "이 기능 이전에 저장된 기록입니다."];
+  const missing = (d.missing_context || []).map((m) => MISSING_TEXT[m] || m);
+  let html = "";
+  html += `<div class="meta">기록 #${d.log_id} · ${fmtTime(d.recorded_at)} · ${d.pain_score}점 (${esc(sev(d.severity_label))}) · ${esc(d.pain_location_name)} · ${esc(d.pain_type_name)}</div>`;
+  if (d.pain_score >= 7) {   // 지금 기준: 통증 7점 이상 = 심각 (정확한 기준은 정하는 중)
+    html += `<div class="warn">통증이 심한 단계입니다. 운동보다 휴식을 우선하고, 계속되면 진료를 받으세요. <span style="font-weight:400">(화면 시연: 지금 기준은 7점 이상)</span></div>`;
+  }
+  html += `<div class="status st-${esc(d.assessment_status)}"><b>${st[0]}</b><span>${st[1]}${missing.length ? ` 빠진 자료: <b>${missing.join(", ")}</b>` : ""}</span></div>`;
+
+  const guides = [...(d.guides || [])].sort((a, b) => LEVEL_ORDER.indexOf(a.level_code) - LEVEL_ORDER.indexOf(b.level_code));
+  for (const g of guides) {
+    html += `<div class="guide"><div class="lv lv-${esc(g.level_code)}">${esc(g.level_label || g.level_code)}</div>
+      <div><div class="name">${esc(g.exercise_name)}</div><div>${esc(g.message || "")}</div>
+      <div class="rule">근거 규칙 #${g.rule_id ?? "-"}</div></div></div>`;
+  }
+  if (d.basic_guide) html += `<div class="basic">${esc(d.basic_guide)}</div>`;
+  if (d.action_guide) html += `<div class="note">점수별 행동 안내: ${esc(d.action_guide)}</div>`;
+  html += `<details><summary>API 응답 그대로 보기 (JSON)</summary><pre>${esc(JSON.stringify(d, null, 2))}</pre></details>`;
+  $("result").innerHTML = html;
+}
+
+// ---------- 3. 날짜별 목록 ----------
+async function loadList() {
+  const day = $("day").value || localDate();
+  const r = await call("GET", `/api/pain-logs?date=${day}`);
+  if (!r.ok) { $("list").innerHTML = `<div class="warn">목록 오류 ${r.status}: ${esc(errorText(r))}</div>`; return; }
+  $("tzinfo").textContent = `기준 시간대: ${r.data.timezone}`;
+  if (!r.data.items.length) { $("list").innerHTML = `<div class="empty">${day}에는 기록이 없습니다</div>`; return; }
+  let html = "<table><thead><tr><th>시각</th><th>점수</th><th>위치 · 유형</th><th>판정</th><th>운동</th></tr></thead><tbody>";
+  for (const it of r.data.items) {
+    html += `<tr data-id="${it.log_id}"><td>${fmtTime(it.recorded_at)}</td><td>${it.pain_score} (${esc(sev(it.severity_label))})</td>
+      <td>${esc(it.pain_location_name)} · ${esc(it.pain_type_name)}</td>
+      <td><span class="tag ${esc(it.assessment_status)}">${esc((STATUS_TEXT[it.assessment_status] || ["-"])[0])}</span></td>
+      <td>${it.guide_count}개</td></tr>`;
+  }
+  html += "</tbody></table>";
+  $("list").innerHTML = html;
+  $("list").querySelectorAll("tbody tr").forEach((tr) => {
+    tr.onclick = async () => {
+      const id = tr.dataset.id;
+      const d = await call("GET", `/api/pain-logs/${id}`);
+      if (d.ok) showDetail(d.data, `GET /api/pain-logs/${id} → ${d.status} (저장된 판정 다시 보기)`);
+    };
+  });
+}
+$("reload").onclick = loadList;
+
+// ---------- 4. 7일 추이 (화면 시연) ----------
+async function loadTrend() {
+  const days = [];
+  for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); days.push(localDate(d)); }
+  const results = await Promise.all(days.map((d) => call("GET", `/api/pain-logs?date=${d}`)));
+  const pts = days.map((d, i) => {
+    const items = results[i].ok ? results[i].data.items : [];
+    return { day: d, max: items.length ? Math.max(...items.map((x) => x.pain_score)) : null, n: items.length };
+  });
+  const W = 520, H = 200, L = 36, R = 28, T = 14, B = 34;
+  const x = (i) => L + (i * (W - L - R)) / 6;
+  const y = (v) => T + ((10 - v) * (H - T - B)) / 10;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="최근 7일 날마다 가장 높은 통증 점수">`;
+  for (const v of [0, 5, 10]) {
+    svg += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#DEDBD2"/><text x="${L - 8}" y="${y(v) + 4}" font-size="11" text-anchor="end" fill="#6B7280">${v}</text>`;
+  }
+  svg += `<rect x="${L}" y="${y(10)}" width="${W - L - R}" height="${y(7) - y(10)}" fill="#F8E4E5" opacity="0.6"/>`;
+  svg += `<text x="${L + 6}" y="${y(10) + 14}" font-size="11" text-anchor="start" fill="#A3262E">7~10 심한 통증</text>`;
+  const known = pts.map((p, i) => [p, i]).filter(([p]) => p.max !== null);
+  if (known.length > 1) svg += `<polyline fill="none" stroke="#2F6FB2" stroke-width="2" points="${known.map(([p, i]) => `${x(i)},${y(p.max)}`).join(" ")}"/>`;
+  pts.forEach((p, i) => {
+    svg += `<text x="${x(i)}" y="${H - 12}" font-size="11" text-anchor="middle" fill="#4A5568">${p.day.slice(5).replace("-", "/")}</text>`;
+    if (p.max !== null) {
+      svg += `<circle cx="${x(i)}" cy="${y(p.max)}" r="5" fill="#2F6FB2"/><text x="${x(i)}" y="${y(p.max) - 9}" font-size="11" text-anchor="middle" fill="#1B2430">${p.max}</text>`;
+    }
+  });
+  svg += "</svg>";
+  const total = pts.reduce((a, p) => a + p.n, 0);
+  $("trend").innerHTML = total ? svg : `<div class="empty">최근 7일 기록이 없습니다</div>`;
+}
+
+// ---------- 5. 입력 검사 시험 ----------
+async function runTest(label, method, path, body) {
+  const r = await call(method, path, body);
+  $("testres").textContent = `${label}\n${method} ${path}${body ? "\n보낸 값: " + JSON.stringify(body) : ""}\n→ ${r.status}\n${errorText(r)}`;
+}
+$("t422").onclick = () => runTest("점수 범위 검사 (schemas.py, ge=0 le=10)", "POST", "/api/pain-logs", { pain_score: 11, pain_location_id: 1, pain_type_id: 1 });
+$("t422b").onclick = () => runTest("없는 위치 검사 (라우터에서 DB 확인)", "POST", "/api/pain-logs", { pain_score: 3, pain_location_id: 999, pain_type_id: 1 });
+$("t404").onclick = () => runTest("없는 기록 / 남의 기록 조회", "GET", "/api/pain-logs/999999");
+
+// ---------- 시작 ----------
+(async () => {
+  $("day").value = localDate();
+  if (await loadOptions()) { loadList(); loadTrend(); }
+})();
+</script>
+</body>
+</html>

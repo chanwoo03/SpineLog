@@ -5,3 +5,7 @@ venv/
 __pycache__/
 deploy/db-init/*.sql
 deploy/*.env
+# NAS DB 백업 파일 (실제 기록이 들어 있어서 GitHub에 올리지 않기)
+backup/
+# Claude가 고치기 전에 남긴 원본 백업 (db.env 등 비밀번호 포함)
+Claude outputs/*.bak-*
