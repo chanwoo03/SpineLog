@@ -410,8 +410,12 @@ const SCREENS = {
         <button class="btn primary block" id="saveCond">질환 · 증상 저장</button>
       </div>
       <div class="card"><h3>목표</h3>
-        <div class="row"><label class="field">수면(분)<input type="number" id="gs" class="input" value="${me.goals.target_sleep_minutes}"></label>
-          <label class="field">걸음(보)<input type="number" id="gw" class="input" step="500" value="${me.goals.target_steps}"></label></div>
+        <p class="muted small">${me.goals.is_default ? "아직 정하지 않았어요 · 나에게 맞는 목표를 적어 주세요" : "내가 정한 목표"}</p>
+        <label class="field">수면 목표
+          <div class="row"><input type="number" id="gsh" class="input num" min="0" max="24" placeholder="예: 7" value="${me.goals.is_default ? "" : Math.floor(me.goals.target_sleep_minutes / 60)}"><span>시간</span>
+            <input type="number" id="gsm" class="input num" min="0" max="59" step="10" placeholder="0" value="${me.goals.is_default ? "" : me.goals.target_sleep_minutes % 60}"><span>분</span></div></label>
+        <label class="field">걸음 목표
+          <div class="row"><input type="number" id="gw" class="input" min="0" max="100000" step="500" placeholder="예: 6000" value="${me.goals.is_default ? "" : me.goals.target_steps}"><span>보</span></div></label>
         <h3>시간대 <span class="muted small">'오늘'을 계산하는 기준</span></h3>
         <select id="tz" class="input">${zones.map(z => `<option ${z === me.timezone ? "selected" : ""}>${z}</option>`).join("")}</select>
         <button class="btn block" id="saveGoal">목표 · 시간대 저장</button>
@@ -430,7 +434,9 @@ const SCREENS = {
       toast("질환 · 증상을 저장했어요");
     };
     $("#saveGoal").onclick = async () => {
-      const r = await api("PUT", "/api/me/goals", { target_sleep_minutes: +$("#gs").value, target_steps: +$("#gw").value }); if (!r.ok) return toast(errText(r), true);
+      if ($("#gsh").value === "" || $("#gw").value === "") return toast("수면 시간과 걸음 수 목표를 적어 주세요", true);
+      const sleepMin = (+$("#gsh").value) * 60 + (+$("#gsm").value || 0);          // 시간 · 분 → 분 (서버는 분으로 저장)
+      const r = await api("PUT", "/api/me/goals", { target_sleep_minutes: sleepMin, target_steps: +$("#gw").value }); if (!r.ok) return toast(errText(r), true);
       const t = await api("PUT", "/api/me/timezone", { timezone: $("#tz").value }); if (!t.ok) return toast(errText(t), true);
       TZ = t.data.timezone; toast("저장했어요");
     };
@@ -450,6 +456,50 @@ function renderDev() {
     ${l.method !== "GET" ? `<div class="muted small">보낸 값</div><pre>${esc(JSON.stringify(l.body, null, 2))}</pre>` : ""}<div class="muted small">응답</div><pre>${esc(JSON.stringify(l.data, null, 2))}</pre></details>`).join("") || `<p class="muted small">아직 호출이 없어요</p>`;
 }
 
+/* ---------- 오늘 빠뜨린 기록 알림 (들어왔을 때 · 로그인 직후 하루 한 번) ----------
+   GET /api/dashboard 에서 오늘 체크인(checkin)과 오늘 통증 기록 수(pain.today_count)를 보고,
+   없는 것이 있으면 창으로 알려 준다. 같은 사용자 · 같은 날에는 한 번만 (sessionStorage에 표시) */
+const REMIND_PREFIX = "spinelog-remind:";
+function remindKey() {
+  const user = window.CURRENT_USER === undefined ? "demo" : window.CURRENT_USER;   // 실제 서버 모드면 server.js가 넣어 줌
+  return user ? REMIND_PREFIX + user + ":" + localDate(new Date().toISOString(), TZ) : null;
+}
+function resetRemind() {                                   // 로그인 직후 다시 알리도록 표시 지우기
+  try { Object.keys(sessionStorage).filter(k => k.startsWith(REMIND_PREFIX)).forEach(k => sessionStorage.removeItem(k)); } catch (e) {}
+  resetRemind.mem = new Set();
+}
+async function remindMissing(screen) {
+  const key = remindKey();
+  if (!key || screen === "welcome" || screen === "checkin" || screen === "pain") return;   // 로그인 전 · 이미 그 화면이면 안 띄움
+  resetRemind.mem = resetRemind.mem || new Set();
+  try { if (sessionStorage.getItem(key)) return; } catch (e) { if (resetRemind.mem.has(key)) return; }
+  if (remindMissing.busy || document.querySelector(".remind-layer")) return;   // 화면이 두 번 바뀌어도 창은 하나만
+  remindMissing.busy = true;
+  let r;
+  try { r = await api("GET", "/api/dashboard"); } finally { remindMissing.busy = false; }
+  if (!r.ok) return;
+  const d = r.data;
+  if (d.todo && d.todo.some(t => t.code === "CONDITION")) return;            // 질환부터 고르는 중이면 나중에
+  const items = [];
+  if (!d.checkin) items.push({ href: "#checkin", title: "아침 체크인", sub: "어젯밤 수면 시간 · 어제 걸음 수" });
+  if (!d.pain.today_count) items.push({ href: "#pain", title: "오늘 통증 기록", sub: "통증 점수를 남기면 오늘 운동을 판정해요" });
+  try { sessionStorage.setItem(key, "1"); } catch (e) { resetRemind.mem.add(key); }   // 오늘은 이제 그만
+  if (!items.length) return;
+  const box = document.createElement("div");
+  box.className = "remind-layer";
+  box.innerHTML = `<div class="remind card" role="dialog" aria-labelledby="remindTitle">
+      <div class="eyebrow">${dateLabel(d.date)}</div>
+      <h3 id="remindTitle">오늘 아직 안 한 기록이 있어요</h3>
+      ${items.map(i => `<a class="todo" href="${i.href}"><span><b>${i.title}</b><br><span class="muted small">${i.sub}</span></span><b>→</b></a>`).join("")}
+      <button class="btn block" type="button">나중에 할게요</button>
+    </div>`;
+  const close = () => box.remove();
+  box.querySelector("button").onclick = close;
+  box.querySelectorAll("a").forEach(a => a.addEventListener("click", close));
+  box.addEventListener("click", e => { if (e.target === box) close(); });
+  document.body.appendChild(box);
+}
+
 /* ---------- 주소(#) 따라 화면 바꾸기 ---------- */
 async function route() {
   document.removeEventListener("change", onMeChange);
@@ -462,6 +512,7 @@ async function route() {
   await SCREENS[screen](arg, q);
   window.scrollTo(0, 0);
   if ($("#dev").open) renderDev();
+  remindMissing(screen);                                   // 오늘 빠뜨린 기록 알림 (하루 한 번)
 }
 window.addEventListener("hashchange", route);
 $("#dev").addEventListener("toggle", () => { if ($("#dev").open) renderDev(); });

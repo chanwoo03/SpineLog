@@ -268,3 +268,8 @@ details .excard{box-shadow:none}
 .alert.good{background:var(--green-bg);color:var(--green)}
 .alert.good b{color:var(--green)}
 .ox .btn.right:disabled,.ox .btn.wrong:disabled{opacity:1}
+
+/* 오늘 빠뜨린 기록 알림 창 */
+.remind-layer{position:fixed;inset:0;z-index:40;background:rgba(20,26,34,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+.remind{width:100%;max-width:420px;display:flex;flex-direction:column;gap:10px;margin-bottom:72px}
+@media (min-width:600px){.remind-layer{align-items:center}.remind{margin-bottom:0}}
