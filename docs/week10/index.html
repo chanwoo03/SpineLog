@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SpineLog · S/W Week9</title>
+<title>SpineLog · S/W Week10</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400..700&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 html,body{margin:0;height:100%;background:#0E1218;overflow:hidden}
@@ -20,9 +20,9 @@ body:hover #hud{opacity:.8}
 </style></head><body>
 <div id="stage">
 <section id="cover" data-transition="fade" style="background:#1B2430;color:#F7F6F2;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#8FB8E3;letter-spacing:2px">S/W PROJECT · WEEK 9</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#8FB8E3;letter-spacing:2px">S/W PROJECT · WEEK 10</p>
 <div style="display:flex;flex-direction:column;gap:28px">
-<h1 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:140px;font-weight:700;line-height:1.05;color:#F7F6F2">S/W Week9</h1>
+<h1 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:140px;font-weight:700;line-height:1.05;color:#F7F6F2">S/W Week10</h1>
 <p style="font-size:44px;line-height:1.4;color:#C9D3DE">SpineLog · 로그인과 실제 데이터</p>
 </div>
 <div style="display:flex;justify-content:space-between;align-items:flex-end">
@@ -32,12 +32,12 @@ body:hover #hud{opacity:.8}
 <aside>이번 주에는 로그인을 만들고, 비어 있던 데이터를 실제로 채워서 기록부터 판정까지 한 바퀴 돌아가게 했습니다.</aside>
 </section>
 <section id="s_built" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;word-break:keep-all;gap:32px">
-<div style="display:flex;flex-direction:column;gap:12px"><p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">지난 발표(Week8) 이후</p><h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2;color:#1B2430">이번 주에 구현한 것</h2></div>
+<div style="display:flex;flex-direction:column;gap:12px"><p style="font-size:24px;font-weight:600;color:#2F6FB2;letter-spacing:2px">지난 발표 이후</p><h2 style="font-family:'IBM Plex Sans KR', Arial, sans-serif;font-size:56px;font-weight:700;line-height:1.2;color:#1B2430">이번 주에 구현한 것</h2></div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
 <div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;color:#2F6FB2">LOGIN</p><h3 style="font-size:32px;font-weight:700;line-height:1.3">회원가입 · 로그인</h3><p style="font-size:24px;line-height:1.5;color:#4A5568">비밀번호는 bcrypt 해시로만 저장 · 로그인하면 JWT 토큰 (24시간)</p></div><div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;color:#2F6FB2">LOGIN</p><h3 style="font-size:32px;font-weight:700;line-height:1.3">모든 API에 로그인 적용</h3><p style="font-size:24px;line-height:1.5;color:#4A5568">토큰 확인은 deps.py 한 곳 · 토큰 없거나 가짜면 401</p></div><div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;color:#2F6FB2">SERVER</p><h3 style="font-size:32px;font-weight:700;line-height:1.3">NAS 서버에 반영</h3><p style="font-size:24px;line-height:1.5;color:#4A5568">API + DB를 NAS Docker에서 실행 · DB 백업(mysqldump)</p></div><div style="background:#E9EEF5;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;color:#2F6FB2">DATA</p><h3 style="font-size:32px;font-weight:700;line-height:1.3">활동 12개 · 동작 태그 연결</h3><p style="font-size:24px;line-height:1.5;color:#4A5568">설거지 · 책상 공부 · 운전 등 → 숙이기 · 장시간 앉기 등</p></div><div style="background:#E9EEF5;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;color:#2F6FB2">DATA</p><h3 style="font-size:32px;font-weight:700;line-height:1.3">활동이 판정을 바꿈</h3><p style="font-size:24px;line-height:1.5;color:#4A5568">허리디스크 + 오래 앉음 → 흉추 신전 스트레칭 추천 (규칙 2개 추가)</p></div><div style="background:#E9EEF5;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;color:#2F6FB2">DATA</p><h3 style="font-size:32px;font-weight:700;line-height:1.3">의학 콘텐츠 · OX 퀴즈</h3><p style="font-size:24px;line-height:1.5;color:#4A5568">허리디스크 1편 + 퀴즈 3개, 질병관리청 자료 기준 · 출처 표시</p></div>
 </div>
 <p style="font-size:22px;color:#6B7280">DB 변경은 번호 붙은 파일(마이그레이션 004~008)로 남기고, 어디까지 적용했는지 DB 표(schema_migrations)에 기록</p>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week9 · 2</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week10 · 2</p>
 <aside>이번 주에 한 것은 크게 두 가지입니다. 첫째는 로그인입니다. 회원가입과 로그인을 만들고, 비밀번호는 원래 글자가 아니라 되돌릴 수 없는 해시로만 저장했습니다. 로그인하면 토큰을 받고, 이 토큰으로 모든 API를 쓰게 했습니다. NAS 서버에도 반영했습니다. 둘째는 데이터입니다. 비어 있던 활동 목록 12개를 넣고, 활동을 기록하면 판정이 바뀌는 규칙을 추가했습니다. 의학 콘텐츠도 질병관리청 자료를 기준으로 첫 편과 퀴즈를 넣었습니다.</aside>
 </section>
 <section id="s_login" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;word-break:keep-all;gap:34px">
@@ -53,7 +53,7 @@ body:hover #hud{opacity:.8}
 <tr><td>가짜 · 고친 · 기한 지난 토큰</td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;color:#B42318">401</td><td>서명이 안 맞거나 24시간이 지남</td></tr>
 <tr><td>정상 토큰</td><td style="font-family:'JetBrains Mono', 'Courier New', monospace;color:#1E6B34">200</td><td>토큰 주인의 기록만 저장 · 조회</td></tr>
 </table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week9 · 3</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week10 · 3</p>
 <aside>로그인 흐름입니다. 가입할 때 비밀번호를 해시로 바꿔 저장하고, 로그인할 때는 입력한 비밀번호를 같은 방식으로 비교합니다. 맞으면 토큰을 주는데, 토큰은 놀이공원 손목 밴드처럼 누구인지와 언제까지인지가 적혀 있고 서버만 찍을 수 있는 도장이 있습니다. 이후 요청이 올 때마다 deps.py가 먼저 도장과 기한을 확인합니다. 원래 모든 API가 이 함수에서 사용자를 받도록 만들어 두었기 때문에, 이 파일 하나만 바꿔서 모든 API에 로그인을 적용할 수 있었습니다.</aside>
 </section>
 <section id="s_flow1" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:96px 128px 140px;display:flex;flex-direction:column;word-break:keep-all;gap:26px">
@@ -65,7 +65,7 @@ body:hover #hud{opacity:.8}
 <a href="img/2_me.jpg" target="_blank" rel="noopener" title="크게 보기"><img src="img/2_me.jpg" alt="내 질환 · 증상 등록" style="width:100%;height:600px;object-fit:contain;background:#F4F7FB;border-radius:14px;border:1px solid #DEDBD2;box-shadow:0 10px 30px rgba(27,36,48,.12);display:block"></a>
 <figcaption style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:30px;font-weight:600;color:#2F6FB2;flex:none">②</span><div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:30px;font-weight:700">내 질환 · 증상 등록 <span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:20px;color:#6B7280;font-weight:400;margin-left:8px">PUT /api/me/conditions</span></p><p style="font-size:23px;line-height:1.45;color:#4A5568">판정의 기준. 허리디스크 + 허리 통증을 고름</p></div></figcaption>
 </figure></div>
-<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7280">S/W Week9 · 4</p>
+<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7280">S/W Week10 · 4</p>
 <aside>여기부터는 실제 서버에 연결한 화면을 순서대로 보여 드리겠습니다. 먼저 회원가입을 하면 바로 로그인되고, 서버가 준 토큰을 화면이 보관해서 이후 모든 요청에 붙입니다. 그다음 내 정보에서 질환과 증상을 고릅니다. 이 정보가 운동 판정의 기준이 됩니다.</aside>
 </section>
 <section id="s_flow2" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:96px 128px 140px;display:flex;flex-direction:column;word-break:keep-all;gap:26px">
@@ -77,7 +77,7 @@ body:hover #hud{opacity:.8}
 <a href="img/4_activity.jpg" target="_blank" rel="noopener" title="크게 보기"><img src="img/4_activity.jpg" alt="활동 기록" style="width:100%;height:600px;object-fit:contain;background:#F4F7FB;border-radius:14px;border:1px solid #DEDBD2;box-shadow:0 10px 30px rgba(27,36,48,.12);display:block"></a>
 <figcaption style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:30px;font-weight:600;color:#2F6FB2;flex:none">④</span><div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:30px;font-weight:700">활동 기록 <span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:20px;color:#6B7280;font-weight:400;margin-left:8px">POST /api/activity-logs</span></p><p style="font-size:23px;line-height:1.45;color:#4A5568">책상에서 공부 3시간 → 동작 태그 "장시간 앉기"가 함께 저장</p></div></figcaption>
 </figure></div>
-<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7280">S/W Week9 · 5</p>
+<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7280">S/W Week10 · 5</p>
 <aside>홈에 들어오면 오늘 아침 체크인이나 통증 기록을 안 했을 때 한 번 알려 줍니다. 빼먹지 않게 하려고 넣은 기능입니다. 그리고 오늘 한 활동을 기록합니다. 책상에서 3시간 공부했다고 저장하면, 이 활동에 연결된 장시간 앉기라는 동작 태그가 함께 기록됩니다.</aside>
 </section>
 <section id="s_flow3" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:96px 128px 140px;display:flex;flex-direction:column;word-break:keep-all;gap:26px">
@@ -89,7 +89,7 @@ body:hover #hud{opacity:.8}
 <a href="img/6_result.jpg" target="_blank" rel="noopener" title="크게 보기"><img src="img/6_result.jpg" alt="저장과 동시에 판정" style="width:100%;height:600px;object-fit:contain;background:#F4F7FB;border-radius:14px;border:1px solid #DEDBD2;box-shadow:0 10px 30px rgba(27,36,48,.12);display:block"></a>
 <figcaption style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:30px;font-weight:600;color:#2F6FB2;flex:none">⑥</span><div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:30px;font-weight:700">저장과 동시에 판정 <span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:20px;color:#6B7280;font-weight:400;margin-left:8px">규칙 21개 + 질환 · 활동</span></p><p style="font-size:23px;line-height:1.45;color:#4A5568">금기 1 · 추천 3. 오래 앉았던 활동 때문에 흉추 신전 스트레칭이 추가됨</p></div></figcaption>
 </figure></div>
-<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7280">S/W Week9 · 6</p>
+<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7280">S/W Week10 · 6</p>
 <aside>통증을 기록하는 화면입니다. 점수를 고르기 어려워서 표정 그림과 점수별 생활 예시를 같이 보여 줍니다. 저장하면 서버가 바로 규칙으로 판정합니다. 허리디스크라서 굽히는 스트레칭은 금기이고, 신전 운동과 걷기는 추천입니다. 그리고 아까 3시간 앉아 있었다는 활동 때문에 흉추 신전 스트레칭이 새로 추천에 들어왔습니다. 활동 기록이 판정에 반영된 것입니다.</aside>
 </section>
 <section id="s_flow4" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:96px 128px 140px;display:flex;flex-direction:column;word-break:keep-all;gap:26px">
@@ -101,7 +101,7 @@ body:hover #hud{opacity:.8}
 <a href="img/9_quiz.jpg" target="_blank" rel="noopener" title="크게 보기"><img src="img/9_quiz.jpg" alt="의학 정보 · OX 퀴즈" style="width:100%;height:600px;object-fit:contain;background:#F4F7FB;border-radius:14px;border:1px solid #DEDBD2;box-shadow:0 10px 30px rgba(27,36,48,.12);display:block"></a>
 <figcaption style="display:flex;gap:16px;align-items:baseline"><span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:30px;font-weight:600;color:#2F6FB2;flex:none">⑧</span><div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:30px;font-weight:700">의학 정보 · OX 퀴즈 <span style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:20px;color:#6B7280;font-weight:400;margin-left:8px">POST /api/quizzes/{id}/attempts</span></p><p style="font-size:23px;line-height:1.45;color:#4A5568">질병관리청 자료 기준 · 출처 표시 · 풀면 해설</p></div></figcaption>
 </figure></div>
-<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7280">S/W Week9 · 7</p>
+<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7280">S/W Week10 · 7</p>
 <aside>운동 탭에서는 오늘 판정을 추천, 주의, 금기로 나눠 보고, 한 운동은 바로 기록할 수 있습니다. 정보 탭에는 질병관리청 자료를 기준으로 정리한 허리디스크 글과 OX 퀴즈가 있습니다. 퀴즈를 풀면 정답과 해설을 보여 줍니다.</aside>
 </section>
 <section id="s_hard" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;word-break:keep-all;gap:28px">
@@ -111,7 +111,7 @@ body:hover #hud{opacity:.8}
 <div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:24px 32px;display:flex;gap:32px;align-items:baseline"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;color:#B42318;white-space:nowrap;width:150px;flex:none">NAS</p><div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:30px;font-weight:700">NAS에서 새 코드가 안 돌아감</h3><p style="font-size:24px;line-height:1.5;color:#4A5568">DB 준비가 느려 관리 화면이 기다리다 실패, 예전 이미지로 실행됨 → 로그를 보고 이미지를 지우고 다시 빌드</p></div></div>
 <div style="background:#FFFFFF;border:1px solid #DEDBD2;border-radius:16px;padding:24px 32px;display:flex;gap:32px;align-items:baseline"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;color:#B42318;white-space:nowrap;width:150px;flex:none">MIGRATION</p><div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:30px;font-weight:700">어떤 DB 파일을 실행했는지 헷갈림</h3><p style="font-size:24px;line-height:1.5;color:#4A5568">같은 파일을 여러 번 실행하기도 함 → 적용 번호를 DB 표에 기록하고, 두 번 실행해도 결과가 같게 작성</p></div></div>
 </div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week9 · 8</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week10 · 8</p>
 <aside>어려웠던 점은 세 가지입니다. 첫째, 예전에 넣어 둔 계정은 비밀번호가 해시가 아니라 그냥 글자여서, 로그인하면 비교하다가 서버 에러가 났습니다. 그래서 그 에러를 잡아서 401로 처리했습니다. 둘째, NAS에서 새 코드가 돌지 않았습니다. DB가 준비되는 데 오래 걸려 관리 화면이 기다리다 실패했고, 예전 이미지로 실행되고 있었습니다. 로그를 보고 원인을 찾아 이미지를 다시 만들었습니다. 셋째, DB 변경 파일을 어디까지 실행했는지 헷갈려서 같은 파일을 여러 번 실행하기도 했습니다. 그래서 적용한 번호를 DB에 기록하고, 여러 번 실행해도 결과가 같도록 파일을 작성했습니다.</aside>
 </section>
 <section id="s_next" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 160px;display:flex;flex-direction:column;word-break:keep-all;gap:30px">
@@ -129,7 +129,7 @@ body:hover #hud{opacity:.8}
 <div style="display:flex;flex-direction:column;gap:6px"><p style="font-size:28px;font-weight:700;color:#1B2430">1 · React 화면</p><p style="font-size:24px;line-height:1.45;color:#4A5568">가입 · 로그인 → 질환 등록 → 통증 기록 → 판정 결과를 화면으로</p></div>
 <div style="display:flex;flex-direction:column;gap:6px"><p style="font-size:28px;font-weight:700;color:#1B2430">2 · 데이터 더 넣기</p><p style="font-size:24px;line-height:1.45;color:#4A5568">질환별 의학 콘텐츠 2~3편 · 출처와 함께</p></div>
 </div></div>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week9 · 9 · 감사합니다</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7280">S/W Week10 · 9 · 감사합니다</p>
 <aside>아직 못 한 것도 말씀드리겠습니다. 데모 앱은 지금 제 PC 서버에만 연결되고, 인터넷의 GitHub 데모는 아직 NAS 서버와 연결되지 않았는데, 바깥에서 접속하려면 HTTPS 설정이 필요하고 그 전에 DB 비밀번호도 바꿔야 합니다. 의학 콘텐츠도 아직 한 편입니다. 다음 주에는 React로 가입부터 판정 결과까지 화면을 만들고, 의학 콘텐츠를 출처와 함께 더 넣겠습니다. 감사합니다.</aside>
 </section>
 

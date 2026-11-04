@@ -338,7 +338,7 @@ const SCREENS = {
         <h3>오늘 한 활동 <span class="muted small">총 ${list.total_minutes}분</span></h3>
         ${list.items.length ? list.items.map(a => `<div class="item"><div><b>${esc(a.type_label)}</b> <span class="muted small">${timeLabel(a.started_at)} · ${a.duration_minutes}분${a.intensity ? ` · 강도 ${a.intensity}` : ""}</span></div>
           <div class="row wrap">${a.tags.map(t => `<span class="tag">${esc(t.tag_label)}</span>`).join("")}</div></div>`).join("") : `<p class="muted small">아직 없어요.</p>`}
-        <p class="muted small">어제~오늘 활동의 동작 태그는 통증 판정 때 '최근 동작'으로 쓰입니다. (지금 규칙 중 동작 조건을 쓰는 규칙은 아직 0개)</p>
+        <p class="muted small">어제~오늘 활동의 동작 태그는 통증 판정 때 '최근 동작'으로 쓰입니다. (예: 허리디스크 + 장시간 앉기 → 흉추 신전 스트레칭 추천)</p>
       </div>
       <details class="card"><summary><b>새 활동 종류 만들기</b> <span class="muted small">POST /api/activity-types</span></summary>
         <input id="tlabel" class="input" placeholder="예: 장거리 운전, 이삿짐 나르기" maxlength="60">
