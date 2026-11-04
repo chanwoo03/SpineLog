@@ -45,6 +45,7 @@ def list_contents(
                 text("""
             SELECT m.content_id, m.title, m.summary, m.category_id, cc.category_name,
                    m.condition_id, c.disease_name,
+                   (SELECT COUNT(*) FROM content_quizzes q WHERE q.content_id = m.content_id) AS quiz_count,
                    EXISTS (SELECT 1 FROM content_views v
                            WHERE v.content_id = m.content_id AND v.user_id = :u) AS viewed
             FROM medical_contents m

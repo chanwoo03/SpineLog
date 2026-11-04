@@ -91,10 +91,14 @@
   function showLogin(msg) {
     decorate();                                   // 아직 창을 안 붙였으면 먼저 붙임
     document.body.classList.add("auth-open");
+    const back = document.querySelector(".top .back"); if (back) back.hidden = true;   // 로그인 전에는 로그아웃 버튼 숨김
     $("#authMsg").textContent = msg || "";
     box.hidden = false;
   }
-  function hideLogin() { box.hidden = true; document.body.classList.remove("auth-open"); }
+  function hideLogin() {
+    box.hidden = true; document.body.classList.remove("auth-open");
+    const back = document.querySelector(".top .back"); if (back) back.hidden = false;
+  }
 
   async function submit(e) {
     e.preventDefault();
