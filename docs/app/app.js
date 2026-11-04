@@ -508,6 +508,7 @@ async function route() {
   const db = loadDB(); TZ = db.user.timezone;
   let screen = name || (db.onboarded ? "home" : "welcome");
   if (!SCREENS[screen]) screen = "home";
+  document.body.dataset.screen = screen;                   // 웹 화면(넓은 화면)에서 화면별 배치에 씀 (style.css)
   document.querySelectorAll(".tabbar a").forEach(a => a.classList.toggle("on", a.dataset.tab === ({ log: "home", records: "home", activity: "home", exercise: "reco", welcome: "home" }[screen] || screen)));
   await SCREENS[screen](arg, q);
   window.scrollTo(0, 0);

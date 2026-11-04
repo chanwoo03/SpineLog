@@ -354,3 +354,69 @@ h3{font-size:15.5px;font-weight:700}
 .life{background:#FAFCFE}
 .toast{border-radius:12px;background:var(--ink)}
 .remind-layer{background:rgba(19,37,63,.45)}
+
+/* =====================================================================
+   웹 버전 (화면 너비 1024px 이상) — 2026-11-04
+   · 아래 메뉴 → 왼쪽 메뉴, 내용은 넓게, 홈 · 운동 추천 · 의학 정보 · 내 정보는 2칸 배치
+   · 창을 좁히거나 휴대폰으로 보면 위의 앱 모양 그대로
+   ===================================================================== */
+@media (min-width:1024px){
+  :root{ --side:248px; --head:64px; }
+  body{padding-bottom:0;padding-left:var(--side);font-size:16px}
+  .wrap{max-width:1080px;padding:0 40px}
+
+  /* 머리: 화면 전체 폭, 높이 고정 */
+  .top{position:fixed;left:0;right:0;top:0;height:var(--head);padding:0 32px;z-index:35}
+  .brand{font-size:19px}
+  #view{padding-top:calc(var(--head) + 28px)!important}   /* 머리가 위에 고정돼서 그만큼 띄움 */
+
+  /* 왼쪽 메뉴 */
+  .tabbar{top:var(--head);bottom:0;left:0;right:auto;width:var(--side);flex-direction:column;justify-content:flex-start;gap:4px;
+    padding:24px 14px;border-top:0;border-right:1px solid var(--line);box-shadow:none;background:#fff}
+  .tabbar::before{content:"메뉴";font-size:12px;font-weight:600;color:var(--muted);padding:0 14px 8px;letter-spacing:.04em}
+  .tabbar::after{content:"SpineLog · 수업용 시연\A의료 조언이 아닙니다";white-space:pre;margin-top:auto;font-size:12px;color:var(--muted);padding:0 14px;line-height:1.6}
+  .tabbar a{flex:none;max-width:none;flex-direction:row;justify-content:flex-start;gap:12px;font-size:15px;padding:12px 14px;border-radius:12px;color:var(--text)}
+  .tabbar a:hover{background:var(--gray-bg)}
+  .tabbar a.on{background:var(--blue-bg);color:var(--blue)}
+  .tabbar svg{width:20px;height:20px}
+
+  /* 내용 */
+  #view{gap:16px}
+  h1{font-size:30px}
+  .greet{padding:8px 2px 4px}
+  .card{padding:22px}
+  .toast{bottom:28px;left:calc(50% + var(--side) / 2)}
+  .devwrap{margin-top:28px;margin-bottom:40px}
+  .remind{margin-bottom:0}
+  .remind-layer{align-items:center}
+
+  /* 2칸 배치: 제목 · 안내 · 큰 카드는 한 줄 전체, 나머지는 두 칸 */
+  body[data-screen=home] #view,
+  body[data-screen=reco] #view,
+  body[data-screen=learn] #view,
+  body[data-screen=me] #view{display:grid;grid-template-columns:1fr 1fr;align-items:start}
+  body[data-screen] #view > *{min-width:0}
+  body[data-screen=home] #view > .greet,
+  body[data-screen=home] #view > .todos,
+  body[data-screen=home] #view > .grid2,
+  body[data-screen=home] #view > a.card.row,
+  body[data-screen=reco] #view > :not(.excard),
+  body[data-screen=learn] #view > :not(.link-card),
+  body[data-screen=me] #view > .greet,
+  body[data-screen=me] #view > .soft,
+  body[data-screen=me] #view > a.card{grid-column:1 / -1}
+  body[data-screen=home] #view > .card{height:100%}
+  body[data-screen=home] .grid2{grid-template-columns:repeat(4,1fr)}
+  body[data-screen=reco] #view > .excard,
+  body[data-screen=learn] #view > .link-card{margin:0;height:100%}
+  body[data-screen=reco] h3.sec{margin-top:12px}
+
+  /* 한 칸짜리 화면은 너무 넓지 않게 */
+  body[data-screen=pain] #view,
+  body[data-screen=checkin] #view,
+  body[data-screen=activity] #view,
+  body[data-screen=exercise] #view,
+  body[data-screen=log] #view,
+  body[data-screen=records] #view,
+  body[data-screen=welcome] #view{max-width:760px}
+}
