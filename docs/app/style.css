@@ -273,3 +273,84 @@ details .excard{box-shadow:none}
 .remind-layer{position:fixed;inset:0;z-index:40;background:rgba(20,26,34,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px}
 .remind{width:100%;max-width:420px;display:flex;flex-direction:column;gap:10px;margin-bottom:72px}
 @media (min-width:600px){.remind-layer{align-items:center}.remind{margin-bottom:0}}
+
+/* =====================================================================
+   병원 테마 (2026-11-04) — 이 블록이 위의 값을 덮어씁니다. 블록을 지우면 예전 모습으로 돌아갑니다.
+   참고한 느낌: 큰 병원 · 의료기관 사이트 (흰 바탕 · 남색 글자 · 의료용 파랑 · 넓은 여백 · 둥근 카드)
+   글꼴: Pretendard (index.html에서 불러옴), 숫자는 같은 너비 숫자(tabular-nums)
+   ===================================================================== */
+:root{
+  --bg:#F4F7FB; --panel:#FFFFFF; --ink:#13253F; --text:#3E4C60; --muted:#7D8A9C; --line:#E2E8F0;
+  --blue:#1764B0; --blue-2:#4D8FD4; --blue-bg:#EBF3FC;
+  --teal:#0E9AA7; --teal-bg:#E3F6F7;
+  --amber:#E89A1C; --amber-bg:#FFF6E6; --amber-ink:#9A5F07;
+  --green:#18875A; --green-bg:#E6F5EE; --red:#D04444; --red-bg:#FDEDED; --gray-bg:#EEF2F7;
+  --grid:transparent; --code:#F2F5F9;
+  --shadow:0 1px 2px rgba(19,37,63,.04),0 4px 18px rgba(19,37,63,.06);
+  --r:18px;
+  --sans:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+body{font-family:var(--sans);background-image:none;letter-spacing:-.005em;font-size:15.5px}
+h1{font-size:25px;font-weight:700;letter-spacing:-.02em}
+h3{font-size:15.5px;font-weight:700}
+.btn,.eyebrow,.greet .muted{font-family:var(--sans)}
+
+/* 머리: 흰 바탕 + 십자 로고 */
+.top{background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);padding-top:14px;padding-bottom:14px}
+.brand{font-size:17px;letter-spacing:-.02em;color:var(--ink)}
+.brand .dot{position:relative;width:24px;height:24px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--teal));box-shadow:none}
+.brand .dot::before,.brand .dot::after{content:"";position:absolute;left:50%;top:50%;background:#fff;border-radius:2px;transform:translate(-50%,-50%)}
+.brand .dot::before{width:12px;height:4px}
+.brand .dot::after{width:4px;height:12px}
+.demo-tag{font:600 11px var(--sans);color:var(--teal);background:var(--teal-bg);padding:3px 9px}
+.back{font-weight:500}
+
+/* 카드 · 큰 배너 */
+.card{border-color:var(--line);padding:18px}
+.hero-card{background:linear-gradient(135deg,#1764B0 0%,#1580B8 55%,#0E9AA7 100%);padding:26px 22px;position:relative;overflow:hidden}
+.hero-card::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero-card h1{font-size:26px;letter-spacing:-.02em}
+.eyebrow{font-weight:600;font-size:12px;letter-spacing:.02em;opacity:.9}
+.greet .muted{font-size:13px;font-weight:500;color:var(--blue)}
+
+/* 할 일 · 알림: 노랑 대신 차분한 파랑 */
+.todo{background:var(--blue-bg);color:var(--blue);border-color:#CFE0F5;font-weight:600}
+.todo .muted{color:var(--text);font-weight:400}
+
+/* 숫자: 고정폭 글꼴 대신 같은 너비 숫자 */
+.score,.score-sm,.score-xs,.big,.day b,.up,.down,.nums button,.ox .btn,.chart .lbl,.chart .axis,.field b{font-family:var(--sans);font-variant-numeric:tabular-nums}
+.score{font-weight:800;color:var(--blue)}
+.score-sm{font-weight:800}
+.score-xs{border-radius:12px;font-weight:700}
+.big{font-weight:700}
+
+/* 입력 · 버튼 */
+.input{height:46px;border-radius:12px;background:#FBFCFE}
+.input:focus{background:#fff;border-color:var(--blue);box-shadow:0 0 0 4px var(--blue-bg)}
+.btn{border-radius:12px;font-weight:600;padding:12px 18px}
+.btn.primary{background:var(--blue);border-color:var(--blue)}
+.btn.primary:hover{background:#12549A}
+.chip{border-radius:12px;padding:8px 13px}
+.chip.on{background:var(--blue);border-color:var(--blue)}
+.crow{border-radius:12px}
+.seg label{border-radius:10px}
+.nums button{border-radius:9px;font-weight:600}
+
+/* 판정 표시 */
+.lv,.badge{border-radius:8px;font-weight:700}
+.excard{border-radius:16px;border-left-width:5px;padding:14px 16px}
+.excard.g-CONTRAINDICATED{background:#FFF9F9}
+.tag{border-radius:8px;font-weight:600}
+
+/* 아래 메뉴 */
+.tabbar{background:rgba(255,255,255,.97);box-shadow:0 -4px 18px rgba(19,37,63,.05)}
+.tabbar a{font-weight:500}
+.tabbar a.on{color:var(--blue);font-weight:700}
+
+/* 초안 표시 · API 기록 */
+.draft{font-family:var(--sans);font-weight:600}
+.draftbox{border-radius:14px}
+.dev{border:1px solid var(--line);background:#fff}
+.life{background:#FAFCFE}
+.toast{border-radius:12px;background:var(--ink)}
+.remind-layer{background:rgba(19,37,63,.45)}
